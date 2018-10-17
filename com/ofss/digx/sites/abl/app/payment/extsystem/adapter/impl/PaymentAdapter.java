@@ -6,9 +6,12 @@ import com.ofss.digx.extxface.impl.ExternalSystemResponseHandler;
 import com.ofss.digx.extxface.impl.endpoint.EndpointFactory;
 import com.ofss.digx.extxface.impl.endpoint.IEndpoint;
 import com.ofss.digx.sites.abl.app.payment.adapter.IPaymentAdapter;
+import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.CardlessWithdrawalAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.DonationTransferAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.MerchantTransferAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.PayAnyoneTransferAssembler;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
 //import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferResponse;
@@ -23,6 +26,8 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponse
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponseDomainDTO;*/
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalRequest;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferRequest;
 import com.ofss.extsystem.business.extsystems.HostAdapterManager;
 import com.ofss.extsystem.dto.HostRequestDTO;

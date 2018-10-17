@@ -295,4 +295,44 @@ public class PaymentAlertHelper
     }
   }
 
+public void generateCardlessWithdrawalPaymentInitiationAlert(CardlessWithdrawalDomain cashlessWithdrawalDomain) {
+    if (LOGGER.isLoggable(Level.FINE)) {
+        LOGGER.log(Level.FINE, FORMATTER
+        
+          .formatMessage("Entered into generateMerchantPaymentInitiationAlert method of PaymentAlertHelper class  Input: Transfer: %s in class '%s'", new Object[] { cashlessWithdrawalDomain, THIS_COMPONENT_NAME }));
+      }
+      ActivityEventKeyDTO activityEventKeyDTO = setActivityEventKeyDTO("com.ofss.digx.sites.abl.app.payment.service.transfer.MerchantTransfer.updateStatus", "PC_MERCHANT_TRANSFER_INITIATION");
+      
+      SessionContext sessionContext = (SessionContext)ThreadAttribute.get("CTX");
+      try
+      {
+        registerActivityAndGenerateEvent(sessionContext, activityEventKeyDTO, new Date(), setAlertDetailsMerchantTransfer(cashlessWithdrawalDomain));
+      }
+      catch (Exception e)
+      {
+        LOGGER.log(Level.SEVERE, FORMATTER.formatMessage("Exception encountered while communicating the alert", new Object[0]), e);
+      }
+      if (LOGGER.isLoggable(Level.FINE)) {
+        LOGGER.log(Level.FINE, FORMATTER
+        
+          .formatMessage("Exit from generateMerchantPaymentInitiationAlert method of PaymentAlertHelper class  Input: Transfer: %s in class '%s'", new Object[] { cashlessWithdrawalDomain, THIS_COMPONENT_NAME }));
+      }
+	
+}
+
+private ActivityLog setAlertDetailsMerchantTransfer(CardlessWithdrawalDomain cashlessWithdrawal) {
+	PaymentInitiationActivityLog alertDetails = new PaymentInitiationActivityLog();
+    CurrencyAmount currencyAmount = new CurrencyAmount();
+    currencyAmount.setAmount(cashlessWithdrawal.getAmount().getAmount());
+    currencyAmount.setCurrency(cashlessWithdrawal.getAmount().getCurrency());
+    
+    alertDetails.setAccountId(cashlessWithdrawal.getDebitAccountId());
+    alertDetails.setSourceAccountNo(cashlessWithdrawal.getDebitAccountId());
+    alertDetails.setPayeeNickname(cashlessWithdrawal.getPayeeNickName());
+    
+    alertDetails.setCurrencyTransferAmount(currencyAmount);
+    alertDetails.setValueDate(cashlessWithdrawal.getValueDate());
+    return alertDetails;
+}
+
 }
