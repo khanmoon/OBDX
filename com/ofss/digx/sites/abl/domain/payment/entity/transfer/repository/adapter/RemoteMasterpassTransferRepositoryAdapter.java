@@ -7,9 +7,9 @@ import com.ofss.digx.domain.payment.entity.TransactionReference;
 import com.ofss.digx.enumeration.payment.PaymentStatusType;
 import com.ofss.digx.framework.domain.repository.adapter.AbstractRemoteRepositoryAdapter;
 import com.ofss.digx.sites.abl.app.payment.adapter.IPaymentAdapter;
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponseDomainDTO;
-import com.ofss.digx.sites.abl.domain.payment.entity.transfer.DonationTransfer;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MasterpassTransfer;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.repository.assembler.PaymentTransferAssembler;
 import com.ofss.fc.app.context.SessionContext;
 import com.ofss.fc.datatype.Date;
@@ -18,49 +18,49 @@ import com.ofss.fc.infra.thread.ThreadAttribute;
 import java.util.List;
 
 public class RemoteMasterpassTransferRepositoryAdapter
-  extends AbstractRemoteRepositoryAdapter<DonationTransfer>
-  implements IDonationTransferRepositoryAdapter
+  extends AbstractRemoteRepositoryAdapter<MasterpassTransfer>
+  implements IMasterpassTransferRepositoryAdapter
 {
-  private static RemoteDonationTransferRepositoryAdapter singletonInstance;
+  private static RemoteMasterpassTransferRepositoryAdapter singletonInstance;
   
-  public static RemoteDonationTransferRepositoryAdapter getInstance()
+  public static RemoteMasterpassTransferRepositoryAdapter getInstance()
   {
     if (singletonInstance == null) {
-      synchronized (RemoteDonationTransferRepositoryAdapter.class)
+      synchronized (RemoteMasterpassTransferRepositoryAdapter.class)
       {
         if (singletonInstance == null) {
-          singletonInstance = new RemoteDonationTransferRepositoryAdapter();
+          singletonInstance = new RemoteMasterpassTransferRepositoryAdapter();
         }
       }
     }
     return singletonInstance;
   }
   
-  public DonationTransfer read(PaymentKey key)
+  public MasterpassTransfer read(PaymentKey key)
     throws com.ofss.digx.infra.exceptions.Exception
   {
     return null;
   }
   
-  public void create(DonationTransfer donationTransfer)
+  public void create(MasterpassTransfer donationTransfer)
     throws com.ofss.digx.infra.exceptions.Exception
   {}
   
-  public void delete(DonationTransfer donationTransfer)
+  public void delete(MasterpassTransfer donationTransfer)
     throws com.ofss.digx.infra.exceptions.Exception
   {}
   
-  public void update(DonationTransfer donationTransfer)
+  public void update(MasterpassTransfer donationTransfer)
     throws com.ofss.digx.infra.exceptions.Exception
   {}
   
-  public List<DonationTransfer> list(String partyId, Date fromDate, Date toDate, PaymentStatusType status)
+  public List<MasterpassTransfer> list(String partyId, Date fromDate, Date toDate, PaymentStatusType status)
     throws com.ofss.digx.infra.exceptions.Exception
   {
     return null;
   }
   
-  public DonationTransfer process(DonationTransfer donationTransfer)
+  public MasterpassTransfer process(MasterpassTransfer donationTransfer)
     throws com.ofss.digx.infra.exceptions.Exception
   {
     SessionContext sessionContext = (SessionContext)ThreadAttribute.get("CTX");
@@ -70,12 +70,12 @@ public class RemoteMasterpassTransferRepositoryAdapter
     IAdapterFactory factory = AdapterFactoryConfigurator.getInstance().getAdapterFactory("CUSTOM_PAYMENT_ADAPTER_FACTORY");
     IPaymentAdapter adapter = (IPaymentAdapter)factory.getAdapter("PaymentAdapter");
     
-    DonationTransferRequestDomainDTO donationTransferReqDTO = null;
+    MasterpassTransferRequestDomainDTO donationTransferReqDTO = null;
     PaymentTransferAssembler assembler = new PaymentTransferAssembler();
-    donationTransferReqDTO = assembler.fromDomainObjectDonationTransfer(donationTransfer);
+    donationTransferReqDTO = assembler.fromDomainObjectMasterpassTransfer(donationTransfer);
     try
     {
-      DonationTransferResponseDomainDTO response = adapter.processDonationTransfer(donationTransferReqDTO);
+      MasterpassTransferResponseDomainDTO response = adapter.processMasterpassTransfer(donationTransferReqDTO);
       donationTransfer.getTransactionReference().setExternalReferenceId(response.getHostReference());
     }
     catch (Exception e)
@@ -85,7 +85,7 @@ public class RemoteMasterpassTransferRepositoryAdapter
     return donationTransfer;
   }
   
-  public List<DonationTransfer> lastPaymentList(Date filterDate)
+  public List<MasterpassTransfer> lastPaymentList(Date filterDate)
     throws com.ofss.digx.infra.exceptions.Exception
   {
     return null;

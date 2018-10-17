@@ -32,7 +32,7 @@ public class MasterpassTransferRepository
   public MasterpassTransfer read(PaymentKey key)
     throws Exception
   {
-	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("DONATION_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("MASTERPASS_TRANSFER_REPOSITORY_ADAPTER");
     
     return repositoryAdapter.read(key);
   }
@@ -48,7 +48,7 @@ public class MasterpassTransferRepository
   public void update(MasterpassTransfer object)
     throws Exception
   {
-	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("DONATION_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("MASTERPASS_TRANSFER_REPOSITORY_ADAPTER");
     
     repositoryAdapter.update(object);
   }
@@ -60,7 +60,7 @@ public class MasterpassTransferRepository
   public List<MasterpassTransfer> list(String partyId, Date fromDate, Date toDate, PaymentStatusType status)
     throws Exception
   {
-	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("DONATION_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("MASTERPASS_TRANSFER_REPOSITORY_ADAPTER");
     
     return repositoryAdapter.list(partyId, fromDate, toDate, status);
   }
@@ -68,7 +68,7 @@ public class MasterpassTransferRepository
   public MasterpassTransfer process(MasterpassTransfer transfer)
     throws Exception
   {
-	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("DONATION_TRANSFER_PAYMENT_HOST_REPOSITORY_ADAPTER");
+	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("MASTERPASS_TRANSFER_HOST_REPOSITORY_ADAPTER");
     
     return repositoryAdapter.process(transfer);
   }
@@ -76,7 +76,7 @@ public class MasterpassTransferRepository
   public List<MasterpassTransfer> lastPaymentList(Date filterDate)
     throws Exception
   {
-	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("DONATION_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+	  IMasterpassTransferRepositoryAdapter repositoryAdapter = (IMasterpassTransferRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("MASTERPASS_TRANSFER_REPOSITORY_ADAPTER");
     
     return repositoryAdapter.lastPaymentList(filterDate);
   }

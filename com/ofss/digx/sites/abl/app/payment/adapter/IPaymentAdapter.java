@@ -4,6 +4,8 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalReques
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
@@ -23,5 +25,8 @@ public abstract interface IPaymentAdapter
   
   public abstract CardlessWithdrawalResponseDomainDTO processCardlessWithdrawal(CardlessWithdrawalRequestDomainDTO cardlessWithdrawalReqDTO)
 		    throws Exception;
+
+public abstract MasterpassTransferResponseDomainDTO processMasterpassTransfer(
+		MasterpassTransferRequestDomainDTO donationTransferReqDTO);
 
 }

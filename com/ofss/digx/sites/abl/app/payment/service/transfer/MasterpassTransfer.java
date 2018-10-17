@@ -76,7 +76,7 @@ public class MasterpassTransfer
       
         .formatMessage("Entered into read method of  Transfer service  Input: TransferReadRequestDTO: %s in class '%s'", new Object[] { donationTransferReadRequestDTO, THIS_COMPONENT_NAME }));
     }
-    super.checkAccessPolicy("com.ofss.digx.sites.abl.app.payment.service.transfer.MasterpassTransfer.read", new Object[] { sessionContext, donationTransferReadRequestDTO });
+    //super.checkAccessPolicy("com.ofss.digx.sites.abl.app.payment.service.transfer.MasterpassTransfer.read", new Object[] { sessionContext, donationTransferReadRequestDTO });
     
     super.canonicalizeInput(donationTransferReadRequestDTO);
     Interaction.begin(sessionContext);
@@ -265,7 +265,7 @@ public class MasterpassTransfer
       
         .formatMessage("Entered into update Status method of  Transfer service  Input: TransferUpdateRequestDTO: %s in class '%s'", new Object[] { donationTransferUpdateRequestDTO, THIS_COMPONENT_NAME }));
     }
-    super.checkAccessPolicy("com.ofss.digx.sites.abl.app.payment.service.transfer.MasterpassTransfer.updateStatus", new Object[] { sessionContext, donationTransferUpdateRequestDTO });
+    //super.checkAccessPolicy("com.ofss.digx.sites.abl.app.payment.service.transfer.MasterpassTransfer.updateStatus", new Object[] { sessionContext, donationTransferUpdateRequestDTO });
     
     super.canonicalizeInput(donationTransferUpdateRequestDTO);
     Interaction.begin(sessionContext);
@@ -368,7 +368,7 @@ public class MasterpassTransfer
     if (logger.isLoggable(Level.FINE)) {
       logger.log(Level.FINE, FORMATTER.formatMessage("Entered into list of Masterpass Transfer service: MasterpassTransferListRequestDTO: %s in class '%s'", new Object[] { donationTransferListRequestDTO, THIS_COMPONENT_NAME }));
     }
-    super.checkAccessPolicy("com.ofss.digx.app.payment.service.transfer.MasterpassTransfer.list", new Object[] { sessionContext, donationTransferListRequestDTO });
+    //super.checkAccessPolicy("com.ofss.digx.app.payment.service.transfer.MasterpassTransfer.list", new Object[] { sessionContext, donationTransferListRequestDTO });
     
     super.canonicalizeInput(donationTransferListRequestDTO);
     TransactionStatus transactionStatus = fetchTransactionStatus();
@@ -421,7 +421,7 @@ public class MasterpassTransfer
       
         .formatMessage("Entered into lastPaymentList of Masterpass Transfer service: MasterpassTransferListRequestDTO: %s in class '%s'", new Object[] { donationTransferListRequestDTO, THIS_COMPONENT_NAME }));
     }
-    super.checkAccessPolicy("com.ofss.digx.app.payment.service.transfer.MasterpassTransfer.lastPaymentList", new Object[] { sessionContext, donationTransferListRequestDTO });
+    //super.checkAccessPolicy("com.ofss.digx.app.payment.service.transfer.MasterpassTransfer.lastPaymentList", new Object[] { sessionContext, donationTransferListRequestDTO });
     
     super.canonicalizeInput(donationTransferListRequestDTO);
     TransactionStatus transactionStatus = fetchTransactionStatus();

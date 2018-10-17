@@ -3,7 +3,8 @@ package com.ofss.digx.sites.abl.domain.payment.entity.transfer.repository.assemb
 import com.ofss.digx.datatype.CurrencyAmount;
 import com.ofss.digx.domain.payment.entity.TransactionReference;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalRequestDomainDTO;
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
 //import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
@@ -13,6 +14,7 @@ import com.ofss.digx.sites.abl.domain.payment.entity.payee.DonationPayeeDetails;
 import com.ofss.digx.sites.abl.domain.payment.entity.payee.PayAnyonePayeeDetails;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.CardlessWithdrawalDomain;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.DonationTransfer;
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MasterpassTransfer;
 //import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MerchantTransfer;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.PayAnyoneTransfer;
 import com.ofss.fc.framework.domain.IAbstractDomainObject;
@@ -92,12 +94,12 @@ public class PaymentTransferAssembler
     return payAnyoneTransferRequestDomainDTO;
   }
   
-  public DonationTransferRequestDomainDTO fromDomainObjectDonationTransfer(DonationTransfer donationTransfer)
+  public MasterpassTransferRequestDomainDTO fromDomainObjectDonationTransfer(DonationTransfer donationTransfer)
   {
-    DonationTransferRequestDomainDTO donationTransferRequestDomainDTO = null;
+    MasterpassTransferRequestDomainDTO donationTransferRequestDomainDTO = null;
     if (donationTransfer != null)
     {
-      donationTransferRequestDomainDTO = new DonationTransferRequestDomainDTO();
+      donationTransferRequestDomainDTO = new MasterpassTransferRequestDomainDTO();
       if (donationTransfer.getAmount() != null)
       {
         CurrencyAmount amount = new CurrencyAmount();
@@ -201,4 +203,38 @@ public class PaymentTransferAssembler
     }
     return cardlessWithdrawalRequestDomainDTO;
   }
+
+public MasterpassTransferRequestDomainDTO fromDomainObjectMasterpassTransfer(MasterpassTransfer masterpassTransfer) {
+	 MasterpassTransferRequestDomainDTO masterpassTransferRequestDomainDTO = null;
+	    if (masterpassTransfer != null)
+	    {
+	      masterpassTransferRequestDomainDTO = new MasterpassTransferRequestDomainDTO();
+	      if (masterpassTransfer.getAmount() != null)
+	      {
+	        CurrencyAmount amount = new CurrencyAmount();
+	        if (masterpassTransfer.getAmount().getAmount() != null)
+	        {
+	          amount.setAmount(masterpassTransfer.getAmount().getAmount());
+	          amount.setCurrency(masterpassTransfer.getAmount().getCurrency());
+	          masterpassTransferRequestDomainDTO.setPmtAmount(amount);
+	        }
+	      }
+	      if (masterpassTransfer.getTransactionReference() != null)
+	      {
+	        masterpassTransferRequestDomainDTO.setSystemReferenceNumber(masterpassTransfer.getTransactionReference()
+	          .getSystemReferenceId());
+	        masterpassTransferRequestDomainDTO.setUserReferenceNo(masterpassTransfer.getTransactionReference()
+	          .getUserReferenceNo());
+	      }
+	      masterpassTransferRequestDomainDTO.setSrcAccount(masterpassTransfer.getDebitAccountId());
+//	      donationTransferRequestDomainDTO.setBillerId(donationTransfer.getPayee().getbillerId());
+	      masterpassTransferRequestDomainDTO.setPurpose(masterpassTransfer.getPurpose());
+	      masterpassTransferRequestDomainDTO.setPartyId(masterpassTransfer.getPartyId());
+	      masterpassTransferRequestDomainDTO.setDebitAccountId(masterpassTransfer.getDebitAccountId());
+	      masterpassTransferRequestDomainDTO.setRemarks(masterpassTransfer.getRemarks());
+	      masterpassTransferRequestDomainDTO.setPaymentDate(masterpassTransfer.getValueDate());
+	      masterpassTransferRequestDomainDTO.setDictionaryArray(getDictionaryArray(masterpassTransfer));
+	    }
+	    return masterpassTransferRequestDomainDTO;
+}
 }

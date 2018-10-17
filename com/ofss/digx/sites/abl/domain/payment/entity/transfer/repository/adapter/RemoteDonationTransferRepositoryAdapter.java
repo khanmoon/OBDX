@@ -11,6 +11,8 @@ import com.ofss.digx.framework.domain.repository.adapter.AbstractRemoteRepositor
 import com.ofss.digx.sites.abl.app.payment.adapter.IPaymentAdapter;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.DonationTransfer;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.repository.assembler.PaymentTransferAssembler;
 import com.ofss.fc.app.context.SessionContext;
@@ -85,13 +87,13 @@ public class RemoteDonationTransferRepositoryAdapter
     IAdapterFactory factory = AdapterFactoryConfigurator.getInstance().getAdapterFactory("CUSTOM_PAYMENT_ADAPTER_FACTORY");
     IPaymentAdapter adapter = (IPaymentAdapter)factory.getAdapter("PaymentAdapter");
     //IPaymentAdapter adapter = (IPaymentAdapter)ExtxfaceAdapterFactory.getInstance().getAdapter(IPaymentAdapter.class, "processDonationTransfer", DeterminantResolver.getInstance().getDeterminantTypeForObject(DonationTransfer.class.getName()));
-    DonationTransferRequestDomainDTO donationTransferReqDTO = null;
+    MasterpassTransferRequestDomainDTO donationTransferReqDTO = null;
     PaymentTransferAssembler assembler = new PaymentTransferAssembler();
     donationTransferReqDTO = assembler.fromDomainObjectDonationTransfer(donationTransfer);
    
     try
     {
-      DonationTransferResponseDomainDTO response = adapter.processDonationTransfer(donationTransferReqDTO);
+      MasterpassTransferResponseDomainDTO response = adapter.processMasterpassTransfer(donationTransferReqDTO);
       donationTransfer.getTransactionReference().setExternalReferenceId(response.getHostReference());
     }
     catch (Exception e)

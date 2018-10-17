@@ -8,17 +8,22 @@ import com.ofss.digx.extxface.impl.endpoint.IEndpoint;
 import com.ofss.digx.sites.abl.app.payment.adapter.IPaymentAdapter;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.CardlessWithdrawalAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.DonationTransferAssembler;
+import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.MasterpassTransferAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.MerchantTransferAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.PayAnyoneTransferAssembler;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
 //import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponse;
-import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferResponse;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MasterpassTransferResponse;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MasterpassTransferResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MerchantTransferRequest;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MerchantTransferResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.PayAnyoneTransferRequest;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.PayAnyoneTransferResponse;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponseDomainDTO;
@@ -29,6 +34,8 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRespons
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalRequest;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferRequest;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferResponse;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MasterpassTransferRequest;
 import com.ofss.extsystem.business.extsystems.HostAdapterManager;
 import com.ofss.extsystem.dto.HostRequestDTO;
 import com.ofss.extsystem.dto.HostResponseDTO;
@@ -230,4 +237,51 @@ public class PaymentAdapter
 		    return cardlessWithdrawalResponse;
 		    
 		  }
+
+@Override
+public MasterpassTransferResponseDomainDTO processMasterpassTransfer(MasterpassTransferRequestDomainDTO masterpassTransferReqDTO) {
+	System.out.println(masterpassTransferReqDTO.toString());
+    if (logger.isLoggable(Level.FINE)) {
+    logger.log(Level.FINE, formatter
+      .formatMessage("Entered in method processDonationTransfer of %s used for donation transfer, %s", new Object[] { THIS_COMPONENT_NAME, masterpassTransferReqDTO }));
+  }
+  super.checkRequest("com.ofss.digx.extxface.payments.impl.PaymentAdapter.processDonationTransfer", new Object[] { masterpassTransferReqDTO });
+  
+  AdapterInteraction.begin();
+  MasterpassTransferResponseDomainDTO donationTransferResponse = null;
+  MasterpassTransferResponse extSystemResponse = null;
+  MasterpassTransferAssembler masterpassTransferAssembler = null;
+  try
+  {
+    masterpassTransferAssembler = new MasterpassTransferAssembler();
+    MasterpassTransferRequest extSystemRequest = masterpassTransferAssembler.toRequest(new Object[] { masterpassTransferReqDTO });
+    
+    IEndpoint endpoint = EndpointFactory.getInstance().getEndpoint(extSystemRequest.getInterfaceId());
+    extSystemResponse = (MasterpassTransferResponse)endpoint.processRequest(extSystemRequest, MasterpassTransferResponse.class);
+  }
+  catch (Exception e)
+  {
+    logger.log(Level.SEVERE, formatter.formatMessage(" Exception has occured while getting response object of %s inside the processDonationTransfer method of %s for %s. Exception details are %s", new Object[] {DonationTransferRequestDomainDTO.class
+    
+      .getName(), THIS_COMPONENT_NAME, masterpassTransferReqDTO, e }));
+  }
+  finally
+  {
+    AdapterInteraction.close();
+  }
+  try {
+	this.responseHandler.checkExternalSystemResponse(extSystemResponse, "TP_PY_0001");
+	donationTransferResponse = masterpassTransferAssembler.fromResponse(new Object[] { extSystemResponse });
+} catch (com.ofss.digx.infra.exceptions.Exception e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+  setExternalReferenceNumber(donationTransferResponse.getHostReference());
+  super.checkResponse(donationTransferResponse);
+  if (logger.isLoggable(Level.FINE)) {
+    logger.log(Level.FINE, formatter
+      .formatMessage("Exiting from method processDonationTransfer of %s used to process donation transfer, donationTransferReqDTO  = %s", new Object[] { THIS_COMPONENT_NAME, masterpassTransferReqDTO }));
+  }
+  return donationTransferResponse;
+}
 }
