@@ -116,6 +116,28 @@ public class Transfer
     merchantTransfer.setSecurityContext(getSecurityContext());
     return merchantTransfer;
   }
+  
+  @Path("/masterpass")
+  public MasterPassTransfer masterpassTransfer()
+  {
+    MasterPassTransfer masterpassTransfer = new MasterPassTransfer();
+    masterpassTransfer.setHttpResponse(getHttpResponse());
+    masterpassTransfer.setHttpRequest(getHttpRequest());
+    masterpassTransfer.setUriInfo(getUriInfo());
+    masterpassTransfer.setSecurityContext(getSecurityContext());
+    return masterpassTransfer;
+  }
+  
+  @Path("/cardless")
+  public CardlessWithdrawal cardlessWithdrawal()
+  {
+	CardlessWithdrawal cardlessWithdrawal = new CardlessWithdrawal();
+	cardlessWithdrawal.setHttpResponse(getHttpResponse());
+	cardlessWithdrawal.setHttpRequest(getHttpRequest());
+	cardlessWithdrawal.setUriInfo(getUriInfo());
+	cardlessWithdrawal.setSecurityContext(getSecurityContext());
+    return cardlessWithdrawal;
+  }
   /*
   @Path("/otp")
   public OTPTransfer oTPTransfer()
