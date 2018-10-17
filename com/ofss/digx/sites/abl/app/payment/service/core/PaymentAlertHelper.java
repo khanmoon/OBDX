@@ -18,6 +18,7 @@ import com.ofss.digx.infra.enumeration.representation.ValueRepresentation;
 import com.ofss.digx.infra.exceptions.Exception;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.CardlessWithdrawalDomain;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.DonationTransfer;
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MasterpassTransfer;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MerchantTransferDomain;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.PayAnyoneTransfer;
 import com.ofss.fc.app.context.SessionContext;
@@ -186,6 +187,22 @@ public class PaymentAlertHelper
     return alertDetails;
   }
   
+  private PaymentInitiationActivityLog setAlertDetailsMasterpassTransfer(MasterpassTransfer donationTransfer)
+  {
+    PaymentInitiationActivityLog alertDetails = new PaymentInitiationActivityLog();
+    CurrencyAmount currencyAmount = new CurrencyAmount();
+    currencyAmount.setAmount(donationTransfer.getAmount().getAmount());
+    currencyAmount.setCurrency(donationTransfer.getAmount().getCurrency());
+    
+    alertDetails.setAccountId(donationTransfer.getDebitAccountId());
+    alertDetails.setSourceAccountNo(donationTransfer.getDebitAccountId());
+    alertDetails.setPayeeNickname(donationTransfer.getPayeeNickName());
+    
+    alertDetails.setCurrencyTransferAmount(currencyAmount);
+    alertDetails.setValueDate(donationTransfer.getValueDate());
+    return alertDetails;
+  }
+  
   public void generateDonationPaymentInitiationAlert(DonationTransfer donationTransferDomain)
   {
     if (LOGGER.isLoggable(Level.FINE)) {
@@ -199,6 +216,31 @@ public class PaymentAlertHelper
     try
     {
       registerActivityAndGenerateEvent(sessionContext, activityEventKeyDTO, new Date(), setAlertDetailsDonationTransfer(donationTransferDomain));
+    }
+    catch (Exception e)
+    {
+      LOGGER.log(Level.SEVERE, FORMATTER.formatMessage("Exception encountered while communicating the alert", new Object[0]), e);
+    }
+    if (LOGGER.isLoggable(Level.FINE)) {
+      LOGGER.log(Level.FINE, FORMATTER
+      
+        .formatMessage("Exit from generateDonationPaymentInitiationAlert method of PaymentAlertHelper class  Input: Transfer: %s in class '%s'", new Object[] { donationTransferDomain, THIS_COMPONENT_NAME }));
+    }
+  }
+  
+  public void generateMasterpassPaymentInitiationAlert(MasterpassTransfer donationTransferDomain)
+  {
+    if (LOGGER.isLoggable(Level.FINE)) {
+      LOGGER.log(Level.FINE, FORMATTER
+      
+        .formatMessage("Entered into generateDonationPaymentInitiationAlert method of PaymentAlertHelper class  Input: Transfer: %s in class '%s'", new Object[] { donationTransferDomain, THIS_COMPONENT_NAME }));
+    }
+    ActivityEventKeyDTO activityEventKeyDTO = setActivityEventKeyDTO("com.ofss.digx.sites.abl.app.payment.service.transfer.DonationTransfer.updateStatus", "PC_DONATION_TRANSFER_INITIATION");
+    
+    SessionContext sessionContext = (SessionContext)ThreadAttribute.get("CTX");
+    try
+    {
+      registerActivityAndGenerateEvent(sessionContext, activityEventKeyDTO, new Date(), setAlertDetailsMasterpassTransfer(donationTransferDomain));
     }
     catch (Exception e)
     {
@@ -252,44 +294,5 @@ public class PaymentAlertHelper
         .formatMessage("Exit from generateMerchantPaymentInitiationAlert method of PaymentAlertHelper class  Input: Transfer: %s in class '%s'", new Object[] { merchantTransferDomain, THIS_COMPONENT_NAME }));
     }
   }
-  private PaymentInitiationActivityLog setAlertDetailsCardlessWithdrawal(CardlessWithdrawalDomain merchantTransfer)
-  {
-    PaymentInitiationActivityLog alertDetails = new PaymentInitiationActivityLog();
-    CurrencyAmount currencyAmount = new CurrencyAmount();
-    currencyAmount.setAmount(merchantTransfer.getAmount().getAmount());
-    currencyAmount.setCurrency(merchantTransfer.getAmount().getCurrency());
-    
-    alertDetails.setAccountId(merchantTransfer.getDebitAccountId());
-    alertDetails.setSourceAccountNo(merchantTransfer.getDebitAccountId());
-    alertDetails.setPayeeNickname(merchantTransfer.getPayeeNickName());
-    
-    alertDetails.setCurrencyTransferAmount(currencyAmount);
-    alertDetails.setValueDate(merchantTransfer.getValueDate());
-    return alertDetails;
-  }
-  
-public void generateCardlessWithdrawalPaymentInitiationAlert(CardlessWithdrawalDomain cardlessWithdrawalDomain) {
-	if (LOGGER.isLoggable(Level.FINE)) {
-	      LOGGER.log(Level.FINE, FORMATTER
-	      
-	        .formatMessage("Entered into generateMerchantPaymentInitiationAlert method of PaymentAlertHelper class  Input: Transfer: %s in class '%s'", new Object[] { cardlessWithdrawalDomain, THIS_COMPONENT_NAME }));
-	    }
-	    ActivityEventKeyDTO activityEventKeyDTO = setActivityEventKeyDTO("com.ofss.digx.sites.abl.app.payment.service.transfer.MerchantTransfer.updateStatus", "PC_MERCHANT_TRANSFER_INITIATION");
-	    
-	    SessionContext sessionContext = (SessionContext)ThreadAttribute.get("CTX");
-	    try
-	    {
-	      registerActivityAndGenerateEvent(sessionContext, activityEventKeyDTO, new Date(), setAlertDetailsCardlessWithdrawal(cardlessWithdrawalDomain));
-	    }
-	    catch (Exception e)
-	    {
-	      LOGGER.log(Level.SEVERE, FORMATTER.formatMessage("Exception encountered while communicating the alert", new Object[0]), e);
-	    }
-	    if (LOGGER.isLoggable(Level.FINE)) {
-	      LOGGER.log(Level.FINE, FORMATTER
-	      
-	        .formatMessage("Exit from generateMerchantPaymentInitiationAlert method of PaymentAlertHelper class  Input: Transfer: %s in class '%s'", new Object[] { cardlessWithdrawalDomain, THIS_COMPONENT_NAME }));
-	    }
-	
-}
+
 }

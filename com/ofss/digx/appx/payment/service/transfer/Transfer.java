@@ -128,15 +128,5 @@ public class Transfer
     return oTPTransfer;
   }
 */
-  @Path("/cardless")
-  public CardlessWithdrawal cardlessWithdrawal()
-  {
-	CardlessWithdrawal cardlessWithdrawal = new CardlessWithdrawal();
-    cardlessWithdrawal.setHttpResponse(getHttpResponse());
-    cardlessWithdrawal.setHttpRequest(getHttpRequest());
-    cardlessWithdrawal.setUriInfo(getUriInfo());
-    cardlessWithdrawal.setSecurityContext(getSecurityContext());
-    return cardlessWithdrawal;
-  }
 
 }

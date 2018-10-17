@@ -1,7 +1,5 @@
 package com.ofss.digx.sites.abl.app.payment.adapter;
 
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalRequestDomainDTO;
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
@@ -20,7 +18,5 @@ public abstract interface IPaymentAdapter
   
   public abstract MerchantTransferResponseDomainDTO processMerchantTransfer(MerchantTransferRequestDomainDTO paramMerchantTransferRequestDomainDTO)
     throws Exception;
-  
-  public abstract CardlessWithdrawalResponseDomainDTO processCardlessWithdrawal(CardlessWithdrawalRequestDomainDTO paramCardlessWithdrawalRequestDomainDTO)
-	throws Exception;
+
 }
