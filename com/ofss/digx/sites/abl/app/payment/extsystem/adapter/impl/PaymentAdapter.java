@@ -6,12 +6,9 @@ import com.ofss.digx.extxface.impl.ExternalSystemResponseHandler;
 import com.ofss.digx.extxface.impl.endpoint.EndpointFactory;
 import com.ofss.digx.extxface.impl.endpoint.IEndpoint;
 import com.ofss.digx.sites.abl.app.payment.adapter.IPaymentAdapter;
-import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.CardlessWithdrawalAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.DonationTransferAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.MerchantTransferAssembler;
 import com.ofss.digx.sites.abl.app.payment.assembler.service.transfer.PayAnyoneTransferAssembler;
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalRequestDomainDTO;
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
 //import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferResponse;
@@ -26,8 +23,6 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponse
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponseDomainDTO;*/
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferResponseDomainDTO;
-import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalRequest;
-import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferRequest;
 import com.ofss.extsystem.business.extsystems.HostAdapterManager;
 import com.ofss.extsystem.dto.HostRequestDTO;
@@ -186,53 +181,4 @@ public class PaymentAdapter
 		    return merchantTransferResponse;
 		    
 		  }
-
-@Override
-public CardlessWithdrawalResponseDomainDTO processCardlessWithdrawal(
-		CardlessWithdrawalRequestDomainDTO cardlessWithdrawalReqDTO) {
-	System.out.println(cardlessWithdrawalReqDTO.toString());
-    if (logger.isLoggable(Level.FINE)) {
-    logger.log(Level.FINE, formatter
-      .formatMessage("Entered in method processMerchantTransfer of %s used for merchant transfer, %s", new Object[] { THIS_COMPONENT_NAME, cardlessWithdrawalReqDTO }));
-  }
-  super.checkRequest("com.ofss.digx.extxface.payments.impl.PaymentAdapter.processMerchantTransfer", new Object[] { cardlessWithdrawalReqDTO });
-  
-  AdapterInteraction.begin();
-  CardlessWithdrawalResponseDomainDTO merchantTransferResponse = null;
-  CardlessWithdrawalResponse extSystemResponse = null;
-  CardlessWithdrawalAssembler merchantTransferAssembler = null;
-  try
-  {
-    merchantTransferAssembler = new CardlessWithdrawalAssembler();
-    CardlessWithdrawalRequest extSystemRequest = merchantTransferAssembler.toRequest(new Object[] { cardlessWithdrawalReqDTO });
-    
-    IEndpoint endpoint = EndpointFactory.getInstance().getEndpoint(extSystemRequest.getInterfaceId());
-    extSystemResponse = (CardlessWithdrawalResponse)endpoint.processRequest(extSystemRequest, CardlessWithdrawalResponse.class);
-  }
-  catch (Exception e)
-  {
-    logger.log(Level.SEVERE, formatter.formatMessage(" Exception has occured while getting response object of %s inside the processMerchantTransfer method of %s for %s. Exception details are %s", new Object[] {MerchantTransferRequestDomainDTO.class
-    
-      .getName(), THIS_COMPONENT_NAME, cardlessWithdrawalReqDTO, e }));
-  }
-  finally
-  {
-    AdapterInteraction.close();
-  }
-  try {
-	this.responseHandler.checkExternalSystemResponse(extSystemResponse, "TP_PY_0001");
-	 merchantTransferResponse = merchantTransferAssembler.fromResponse(new Object[] { extSystemResponse });
-} catch (com.ofss.digx.infra.exceptions.Exception e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
- 
-  setExternalReferenceNumber(merchantTransferResponse.getHostReference());
-  super.checkResponse(merchantTransferResponse);
-  if (logger.isLoggable(Level.FINE)) {
-    logger.log(Level.FINE, formatter
-      .formatMessage("Exiting from method processMerchantTransfer of %s used to process merchant transfer, merchantTransferReqDTO  = %s", new Object[] { THIS_COMPONENT_NAME, cardlessWithdrawalReqDTO }));
-  }
-  return merchantTransferResponse;
-}
 }

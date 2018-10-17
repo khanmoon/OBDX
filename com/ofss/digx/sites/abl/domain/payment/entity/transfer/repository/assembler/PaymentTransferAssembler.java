@@ -2,7 +2,6 @@ package com.ofss.digx.sites.abl.domain.payment.entity.transfer.repository.assemb
 
 import com.ofss.digx.datatype.CurrencyAmount;
 import com.ofss.digx.domain.payment.entity.TransactionReference;
-import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
@@ -11,7 +10,6 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequest
 import com.ofss.digx.sites.abl.domain.payment.entity.payee.DonationPayeeDetails;
 //import com.ofss.digx.sites.abl.domain.payment.entity.payee.MerchantPayeeDetails;
 import com.ofss.digx.sites.abl.domain.payment.entity.payee.PayAnyonePayeeDetails;
-import com.ofss.digx.sites.abl.domain.payment.entity.transfer.CardlessWithdrawalDomain;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.DonationTransfer;
 //import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MerchantTransfer;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.PayAnyoneTransfer;
@@ -165,40 +163,4 @@ public class PaymentTransferAssembler
     }
     return merchantTransferRequestDomainDTO;
   }
-
-public CardlessWithdrawalRequestDomainDTO fromDomainObjectCardlessWithdrawal(
-		CardlessWithdrawalDomain cardlessWithdrawal) {
-	CardlessWithdrawalRequestDomainDTO merchantTransferRequestDomainDTO = null;
-    if (cardlessWithdrawal != null)
-    {
-      merchantTransferRequestDomainDTO = new CardlessWithdrawalRequestDomainDTO();
-      if (cardlessWithdrawal.getAmount() != null)
-      {
-        CurrencyAmount amount = new CurrencyAmount();
-        if (cardlessWithdrawal.getAmount().getAmount() != null)
-        {
-          amount.setAmount(cardlessWithdrawal.getAmount().getAmount());
-          amount.setCurrency(cardlessWithdrawal.getAmount().getCurrency());
-          merchantTransferRequestDomainDTO.setPmtAmount(amount);
-        }
-      }
-      if (cardlessWithdrawal.getTransactionReference() != null)
-      {
-        merchantTransferRequestDomainDTO.setSystemReferenceNumber(cardlessWithdrawal.getTransactionReference()
-          .getSystemReferenceId());
-        merchantTransferRequestDomainDTO.setUserReferenceNo(cardlessWithdrawal.getTransactionReference()
-          .getUserReferenceNo());
-      }
-      merchantTransferRequestDomainDTO.setPurpose(cardlessWithdrawal.getPurpose());
-      merchantTransferRequestDomainDTO.setPartyId(cardlessWithdrawal.getPartyId());
-      merchantTransferRequestDomainDTO.setDebitAccountId(cardlessWithdrawal.getDebitAccountId());
-      merchantTransferRequestDomainDTO.setRemarks(cardlessWithdrawal.getRemarks());
-      merchantTransferRequestDomainDTO.setPaymentDate(cardlessWithdrawal.getValueDate());
-      merchantTransferRequestDomainDTO.setDictionaryArray(getDictionaryArray(cardlessWithdrawal));
-      
-      merchantTransferRequestDomainDTO.setTpin(cardlessWithdrawal.getPayee().getTpin());
-      merchantTransferRequestDomainDTO.setWithdrawalRef(cardlessWithdrawal.getPayee().getWithdrawalRef());
-    }
-    return merchantTransferRequestDomainDTO;
-}
 }
