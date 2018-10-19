@@ -1,19 +1,20 @@
 package com.ofss.digx.sites.abl.extxface.payments.impl.dto;
 
-import com.ofss.digx.datatype.MasterpassName;
-import com.ofss.digx.datatype.MasterpassAddress;
-import com.ofss.digx.datatype.MasterpassIdentification;
-import com.ofss.digx.datatype.MasterpassCard;
-import com.ofss.digx.datatype.ReceivingAmount;
-import com.ofss.digx.datatype.CardAcceptor;
+import com.ofss.digx.datatype.Name;
+import com.ofss.digx.datatype.Address;
+import com.ofss.digx.datatype.CurrencyAmount;
 import com.ofss.digx.extxface.impl.dto.ExternalSystemRequest;
+import com.ofss.digx.sites.abl.datatype.CardAcceptor;
+import com.ofss.digx.sites.abl.datatype.MasterpassCard;
+import com.ofss.digx.sites.abl.datatype.MasterpassIdentification;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name="", propOrder={"LocalDate", "LocalTime", "TransactionReference", "SenderName", "SenderPhone", "SenderDateOfBirth", "SenderAddress", "SenderIdentification", "SenderNationality", "SenderCountryOfBirth", "FundingCard", "FundingSource", "AdditionalMessage", "ParticipationID", "LanguageIdentification", "LanguageData", "ReceiverName", "ReceiverAddress", "ReceiverPhone", "ReceiverDateOfBirth", "ReceiverIdentification", "ReceiverNationality", "ReceiverCountryOfBirth", "ReceivingCard", "ReceivingAmount", "Channel", "ICA", "ProcessorId", "RoutingAndTransitNumber", "CardAcceptor", "TransactionDesc", "MerchantId", "TransactionPurpose"})
+@XmlType(name="", propOrder={"LocalDate", "LocalTime", "TransactionReference", "SenderName", "SenderPhone", "SenderDateOfBirth", "SenderAddress", "SenderIdentification", "SenderNationality", "SenderCountryOfBirth", "FundingCard", "FundingSource", "AdditionalMessage", "ParticipationID", "LanguageIdentification", "LanguageData", "ReceiverName", "ReceiverAddress", "ReceiverPhone", "ReceiverDateOfBirth", "ReceiverIdentification", "ReceiverNationality", "ReceiverCountryOfBirth", "ReceivingCard","ReceivingAmount", "Channel", "ICA", "ProcessorId", "RoutingAndTransitNumber", "CardAcceptor", "TransactionDesc", "MerchantId", "TransactionPurpose"})
 @XmlRootElement(name="PaymentRequestV3")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MasterpassTransferRequest
@@ -26,13 +27,13 @@ public class MasterpassTransferRequest
   @XmlElement(name="TransactionReference", required=true)
   private String TransactionReference;
   @XmlElement(name="SenderName", required=true)
-  private MasterpassName SenderName;
+  private Name SenderName;
   @XmlElement(name="SenderPhone", required=true)
   private String SenderPhone;
   @XmlElement(name="SenderDateOfBirth", required=true)
   private String SenderDateOfBirth;
   @XmlElement(name="SenderAddress", required=true)
-  private MasterpassAddress SenderAddress;
+  private Address SenderAddress;
   @XmlElement(name="SenderIdentification", required=true)
   private MasterpassIdentification SenderIdentification;
   @XmlElement(name="SenderNationality", required=true)
@@ -42,7 +43,7 @@ public class MasterpassTransferRequest
   @XmlElement(name="FundingCard", required=true)
   private MasterpassCard FundingCard;
   @XmlElement(name="FundingSource", required=true)
-  private String FundingSource;
+  private MasterpassCard FundingSource;
   @XmlElement(name="AdditionalMessage", required=true)
   private String AdditionalMessage;
   @XmlElement(name="ParticipationID", required=true)
@@ -52,9 +53,9 @@ public class MasterpassTransferRequest
   @XmlElement(name="LanguageData", required=true)
   private String LanguageData;
   @XmlElement(name="ReceiverName", required=true)
-  private MasterpassName ReceiverName;
+  private Name ReceiverName;
   @XmlElement(name="ReceiverAddress", required=true)
-  private MasterpassAddress ReceiverAddress;
+  private Address ReceiverAddress;
   @XmlElement(name="ReceiverPhone", required=true)
   private String ReceiverPhone;
   @XmlElement(name="ReceiverDateOfBirth", required=true)
@@ -68,7 +69,7 @@ public class MasterpassTransferRequest
   @XmlElement(name="ReceivingCard", required=true)
   private MasterpassCard ReceivingCard;
   @XmlElement(name="ReceivingAmount", required=true)
-  private ReceivingAmount ReceivingAmount;
+  private CurrencyAmount ReceivingAmount;
   @XmlElement(name="Channel", required=true)
   private String Channel;
   @XmlElement(name="ICA", required=true)
@@ -91,7 +92,18 @@ public class MasterpassTransferRequest
     super(interfaceId);
   }
   
-  public MasterpassTransferRequest() {}
+  
+  public CurrencyAmount getReceivingAmount() {
+	return ReceivingAmount;
+}
+
+
+public void setReceivingAmount(CurrencyAmount receivingAmount) {
+	ReceivingAmount = receivingAmount;
+}
+
+
+public MasterpassTransferRequest() {}
 
 	public String getLocalDate() {
 		return LocalDate;
@@ -117,11 +129,11 @@ public class MasterpassTransferRequest
 		TransactionReference = transactionReference;
 	}
 	
-	public MasterpassName getSenderName() {
+	public Name getSenderName() {
 		return SenderName;
 	}
 	
-	public void setSenderName(MasterpassName masterpassName) {
+	public void setSenderName(Name masterpassName) {
 		SenderName = masterpassName;
 	}
 	
@@ -141,11 +153,11 @@ public class MasterpassTransferRequest
 		SenderDateOfBirth = senderDateOfBirth;
 	}
 	
-	public MasterpassAddress getSenderAddress() {
+	public Address getSenderAddress() {
 		return SenderAddress;
 	}
 	
-	public void setSenderAddress(MasterpassAddress masterpassAddress) {
+	public void setSenderAddress(Address masterpassAddress) {
 		SenderAddress = masterpassAddress;
 	}
 	
@@ -181,11 +193,11 @@ public class MasterpassTransferRequest
 		FundingCard = fundingCard;
 	}
 	
-	public String getFundingSource() {
+	public MasterpassCard getFundingSource() {
 		return FundingSource;
 	}
 	
-	public void setFundingSource(String fundingSource) {
+	public void setFundingSource(MasterpassCard fundingSource) {
 		FundingSource = fundingSource;
 	}
 	
@@ -221,19 +233,19 @@ public class MasterpassTransferRequest
 		LanguageData = languageData;
 	}
 	
-	public MasterpassName getReceiverName() {
+	public Name getReceiverName() {
 		return ReceiverName;
 	}
 	
-	public void setReceiverName(MasterpassName receiverName) {
+	public void setReceiverName(Name receiverName) {
 		ReceiverName = receiverName;
 	}
 	
-	public MasterpassAddress getReceiverAddress() {
+	public Address getReceiverAddress() {
 		return ReceiverAddress;
 	}
 	
-	public void setReceiverAddress(MasterpassAddress receiverAddress) {
+	public void setReceiverAddress(Address receiverAddress) {
 		ReceiverAddress = receiverAddress;
 	}
 	
@@ -283,14 +295,6 @@ public class MasterpassTransferRequest
 	
 	public void setReceivingCard(MasterpassCard masterpassCard) {
 		ReceivingCard = masterpassCard;
-	}
-	
-	public ReceivingAmount getReceivingAmount() {
-		return ReceivingAmount;
-	}
-	
-	public void setReceivingAmount(ReceivingAmount receivingAmount) {
-		ReceivingAmount = receivingAmount;
 	}
 	
 	public String getChannel() {

@@ -4,11 +4,14 @@ import com.ofss.digx.app.AbstractApplication;
 import com.ofss.digx.app.Interaction;
 import com.ofss.digx.app.adapter.BusinessPolicyFactoryConfigurator;
 import com.ofss.digx.app.exception.RunTimeException;
+import com.ofss.digx.app.party.dto.AddressListResponse;
+import com.ofss.digx.app.party.dto.PartyAddressRequestDTO;
 import com.ofss.digx.app.payment.assembler.service.PaymentKeyAssembler;
 import com.ofss.digx.app.payment.dto.PaymentValueDateHelperInputDTO;
 import com.ofss.digx.app.payment.service.core.PaymentPartyRecordAccessSystemConstraint;
 import com.ofss.digx.app.payment.service.core.PaymentTokenGenerationHelper;
 import com.ofss.digx.app.payment.service.core.UpdateStatusPaymentSystemConstraint;
+import com.ofss.digx.app.user.dto.UserProfileResponse;
 import com.ofss.digx.common.annotations.Role;
 import com.ofss.digx.common.generator.ISystemReferenceValueGenerator;
 import com.ofss.digx.common.generator.SystemReferenceValueGeneratorFactory;
@@ -16,6 +19,7 @@ import com.ofss.digx.datatype.complex.Account;
 import com.ofss.digx.datatype.complex.Party;
 import com.ofss.digx.domain.payment.entity.PaymentKey;
 import com.ofss.digx.domain.payment.entity.TransactionReference;
+import com.ofss.digx.enumeration.AddressType;
 import com.ofss.digx.enumeration.ModuleType;
 import com.ofss.digx.enumeration.payment.PaymentModeType;
 import com.ofss.digx.enumeration.payment.PaymentStatusType;
@@ -320,6 +324,29 @@ public class MasterpassTransfer
       catch (Exception e) {
         e.printStackTrace();
       }
+      UserProfileResponse userProfileResponse = null;
+      AddressListResponse addressListResponse = null;
+      PartyAddressRequestDTO partyAddressRequestDTO = null;
+      List<AddressType> addressTypesFilter = null;
+      com.ofss.digx.app.user.service.User user = new com.ofss.digx.app.user.service.User();
+      userProfileResponse = user.fetchProfile(sessionContext);
+      addressTypesFilter.add(AddressType.RESIDENTIAL);
+      partyAddressRequestDTO = new PartyAddressRequestDTO();
+      partyAddressRequestDTO.setPartyId(new Party(sessionContext.getTransactingPartyCode()));
+      partyAddressRequestDTO.setAddressTypesFilter(addressTypesFilter);
+      addressListResponse = new com.ofss.digx.app.party.service.core.Party().listAddress(sessionContext, partyAddressRequestDTO);
+      donationTransferDomain.setSender_address_line1(addressListResponse.getPartyAddressDTO().get(0).getPostalAddress().getLine1());
+      donationTransferDomain.setSender_address_city(addressListResponse.getPartyAddressDTO().get(0).getPostalAddress().getCity());
+      donationTransferDomain.setSender_address_state(addressListResponse.getPartyAddressDTO().get(0).getPostalAddress().getState());
+      donationTransferDomain.setSender_address_country(addressListResponse.getPartyAddressDTO().get(0).getPostalAddress().getCountry());
+      donationTransferDomain.setSender_address_postalcode(addressListResponse.getPartyAddressDTO().get(0).getPostalAddress().getPostalCode());
+      donationTransferDomain.setSender_email(userProfileResponse.getUserProfile().getEmailId().getValue());
+      donationTransferDomain.setSender_phone(userProfileResponse.getUserProfile().getPhoneNumber().getValue());
+      donationTransferDomain.setSender_first_name(userProfileResponse.getUserProfile().getFirstName());
+      donationTransferDomain.setSender_last_name(userProfileResponse.getUserProfile().getLastName());
+      donationTransferDomain.setSender_middle_name(userProfileResponse.getUserProfile().getMiddleName());
+      
+      
       if (!tokenGenerationDetails.isTokenAllowed())
       {
         try {

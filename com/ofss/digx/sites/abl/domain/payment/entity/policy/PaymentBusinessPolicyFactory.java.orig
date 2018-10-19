@@ -1,0 +1,332 @@
+package com.ofss.digx.sites.abl.domain.payment.entity.policy;
+
+
+import com.ofss.digx.domain.payment.entity.draft.policy.DeleteDomesticDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.DeleteInternationalDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.DraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.LastPaymentListDomesticDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.LastPaymentListInternationalDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.ListDomesticDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.ListInternationalDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.ReadDomesticDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.draft.policy.ReadInternationalDraftBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.instructions.payin.policy.DomesticPayinBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.DeleteDomesticPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.DeleteInternationalPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.DomesticPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.InternationalPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.ListDomesticPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.ListInternationalPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.ReadDomesticPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.payout.policy.ReadInternationalPayoutBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.policy.CreditCardPaymentListBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.policy.FetchCurrentDateBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.policy.FetchPaymentCurrenciesBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.policy.ListPaymentTransactionBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.policy.ListPeerToPeerTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.policy.PeerToPeerTransferUpdateReceiverStatusBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.policy.WorkingWindowCheckBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.BillPaymentBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.CreateExternalTransferVerificationBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.CreditCardIntiatePaymentBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.CreditCardPaymentAuthenticationBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.DeleteBillPaymentBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.DeleteExternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.DeleteInternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.DeleteQRTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.DeleteSelfTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ExternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.InternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ListBillPaymentBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ListExternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ListInternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ListMerchantTransferDataBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ListQRTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ListSelfTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.MerchantTransferDataCreateBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.MerchantTransferDataReadBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferAuthenticationBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferCreateGlobalPayeeBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferFetchPaymentBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferIntiateTransactionBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferReadGlobalPayeeBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferTransactionBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferUpdateGlobalPayeeBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferValidateOTPBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.PeerToPeerTransferValidateSecurityCodeBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.QRCodeTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ReadBillPaymentBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ReadExternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ReadExternalTransferVerificationBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ReadInternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ReadMerchantBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ReadQRTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.ReadSelfTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.SearchExternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.SelfTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.UpdateExternalTransferBusinessPolicy;
+import com.ofss.digx.domain.payment.entity.transfer.policy.VerifyExternalTransferBusinessPolicy;
+<<<<<<< HEAD
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.policy.CardlessWithdrawalBusinessPolicy;
+=======
+>>>>>>> mansoor
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.policy.DonationTransferBusinessPolicy;
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.policy.MerchantTransferBusinessPolicy;
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.policy.PayAnyoneTransferBusinessPolicy;
+import com.ofss.fc.framework.domain.policy.AbstractBusinessPolicy;
+import com.ofss.fc.framework.domain.policy.AbstractBusinessPolicyFactory;
+import com.ofss.fc.framework.domain.policy.IBusinessPolicyDTO;
+import com.ofss.fc.infra.log.impl.MultiEntityLogger;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class PaymentBusinessPolicyFactory
+  extends AbstractBusinessPolicyFactory
+{
+  private static final String THIS_COMPONENT_NAME = PaymentBusinessPolicyFactory.class.getName();
+  private static final MultiEntityLogger FORMATTER = MultiEntityLogger.getUniqueInstance();
+  private static final Logger logger = FORMATTER.getLogger(THIS_COMPONENT_NAME);
+  private static PaymentBusinessPolicyFactory uniqueInstance = null;
+  
+  public static PaymentBusinessPolicyFactory getInstance()
+  {
+    if (uniqueInstance == null) {
+      synchronized (PaymentBusinessPolicyFactory.class)
+      {
+        if (uniqueInstance == null) {
+          uniqueInstance = new PaymentBusinessPolicyFactory();
+        }
+      }
+    }
+    return uniqueInstance;
+  }
+  
+  public AbstractBusinessPolicy getBusinesPolicyInstance(String policyId, IBusinessPolicyDTO iBusinessPolicyDTO)
+  {
+    if (logger.isLoggable(Level.FINE)) {
+      logger.log(Level.FINE, FORMATTER.formatMessage("Entered into com.ofss.digx.domain.payment.entity.policy.PaymentBusinessPolicyFactory.getBusinesPolicyInstance() ", new Object[0]));
+    }
+    AbstractBusinessPolicy abstractBusinessPolicy = super.getBusinesPolicyInstance(policyId, iBusinessPolicyDTO);
+    if (abstractBusinessPolicy == null) {
+      switch (policyId)
+      {
+      case "PAYMENT_SELF_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new SelfTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_SELF_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadSelfTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_SELF_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteSelfTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_SELF_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListSelfTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_INTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new InternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_INTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadInternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_INTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteInternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_INTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListInternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_DOMESTIC_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DomesticPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_INTERNATIONAL_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new InternationalPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_PEER_TO_PEER_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferIntiateTransactionBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_PEER_TO_PEER_TRANSFER_AUTHENTICATION_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferAuthenticationBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_DEMAND_DRAFT_BUSINESS_POLICY": 
+      case "PAYMENT_INTERNATIONAL_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_PAYIN_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DomesticPayinBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "GLOBAL_PAYEE__CREATE_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferCreateGlobalPayeeBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "GLOBAL_PAYEE_UPDATE_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferUpdateGlobalPayeeBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "GLOBAL_PAYEE_READ_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferReadGlobalPayeeBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PEER_TO_PEER_PAYMENT_VALIDATE_SECURITY_CODE_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferValidateSecurityCodeBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "GLOBAL_PAYEE_VALIDATE_OTP_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferValidateOTPBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_EXTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ExternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "CREDITCARD_PAYMENT_INIT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new CreditCardIntiatePaymentBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "CREDITCARD_PAYMENT_AUTH_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new CreditCardPaymentAuthenticationBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "MERCHANT_TRANSFER_DATA_READ_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new MerchantTransferDataReadBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "MERCHANT_TRANSFER_DATA_CREATE_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new MerchantTransferDataCreateBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "BILL_PAYMENT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new BillPaymentBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_PEER_TO_PEER_TRANSFER_READ_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferFetchPaymentBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_PEER_TO_PEER_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListPeerToPeerTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "P2P_TRANSFER_UPDATE_STATUS_RECEIVER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferUpdateReceiverStatusBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "GENERIC_PAYMENT_UPD_STATUS_WORKING_WINDOW_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new WorkingWindowCheckBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_QRCODE_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new QRCodeTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_EXTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadExternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_EXTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteExternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "UPDATE_EXTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new UpdateExternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_EXTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListExternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "SEARCH_EXTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new SearchExternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_MERCHANT_TRANSFER_DATA_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListMerchantTransferDataBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "MERCHANT_READ_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadMerchantBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_BILL_PAYMENT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadBillPaymentBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_BILL_PAYMENT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteBillPaymentBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_BILL_PAYMENT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListBillPaymentBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_QRCODE_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadQRTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_QRCODE_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteQRTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_QRCODE_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListQRTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "CREATE_EXTERNAL_TRANSFER_VERIFICATION_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new CreateExternalTransferVerificationBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_EXTERNAL_TRANSFER_VERIFICATION_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadExternalTransferVerificationBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "VERIFY_EXTERNAL_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new VerifyExternalTransferBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "CREDITCARD_PAYMENT_LIST_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new CreditCardPaymentListBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_PAYMENTS_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListPaymentTransactionBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "FETCH_CURRENT_DATE_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new FetchCurrentDateBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "FETCH_PAYMENT_CURRENCIES_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new FetchPaymentCurrenciesBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_INTERNATIONAL_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteInternationalDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_INTERNATIONAL_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadInternationalDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_INTERNATIONAL_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListInternationalDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LAST_PAYMENT_LIST_INTERNATIONAL_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new LastPaymentListInternationalDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_DOMESTIC_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteDomesticDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_DOMESTIC_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadDomesticDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_DOMESTIC_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListDomesticDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LAST_PAYMENT_LIST_DOMESTIC_DRAFT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new LastPaymentListDomesticDraftBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_DOMESTIC_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadDomesticPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_DOMESTIC_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteDomesticPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_DOMESTIC_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListDomesticPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "READ_INTERNATIONAL_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ReadInternationalPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "DELETE_INTERNATIONAL_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new DeleteInternationalPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "LIST_INTERNATIONAL_PAYOUT_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new ListInternationalPayoutBusinessPolicy(iBusinessPolicyDTO);
+        break;
+      case "PAYMENT_DONATION_BUSINESS_POLICY": 
+    	  abstractBusinessPolicy = new DonationTransferBusinessPolicy(iBusinessPolicyDTO);
+          break;
+      case "PAYMENT_MERCHANT_BUSINESS_POLICY": 
+    	  abstractBusinessPolicy = new MerchantTransferBusinessPolicy(iBusinessPolicyDTO);
+          break;
+	  case "PAYMENT_PAYANYONE_TRANSFER_BUSINESS_POLICY":
+    	  abstractBusinessPolicy = new PayAnyoneTransferBusinessPolicy(iBusinessPolicyDTO);
+    	  break;
+      case "PEER_TO_PEER_TRANSFER_BUSINESS_POLICY": 
+        abstractBusinessPolicy = new PeerToPeerTransferTransactionBusinessPolicy(iBusinessPolicyDTO);
+<<<<<<< HEAD
+        break;
+      case "PAYMENT_CARDLESSWITHDRAWAL_BUSINESS_POLICY": 
+    	  abstractBusinessPolicy = new CardlessWithdrawalBusinessPolicy(iBusinessPolicyDTO);
+          break;
+=======
+>>>>>>> mansoor
+      }
+    }
+    if (logger.isLoggable(Level.FINE)) {
+      logger.log(Level.FINE, FORMATTER.formatMessage("Exiting from com.ofss.digx.domain.payment.entity.policy.PaymentBusinessPolicyFactory.getBusinesPolicyInstance() ", new Object[0]));
+    }
+    return abstractBusinessPolicy;
+  }
+}

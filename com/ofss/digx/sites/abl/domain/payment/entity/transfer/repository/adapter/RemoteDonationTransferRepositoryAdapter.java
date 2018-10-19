@@ -87,13 +87,13 @@ public class RemoteDonationTransferRepositoryAdapter
     IAdapterFactory factory = AdapterFactoryConfigurator.getInstance().getAdapterFactory("CUSTOM_PAYMENT_ADAPTER_FACTORY");
     IPaymentAdapter adapter = (IPaymentAdapter)factory.getAdapter("PaymentAdapter");
     //IPaymentAdapter adapter = (IPaymentAdapter)ExtxfaceAdapterFactory.getInstance().getAdapter(IPaymentAdapter.class, "processDonationTransfer", DeterminantResolver.getInstance().getDeterminantTypeForObject(DonationTransfer.class.getName()));
-    MasterpassTransferRequestDomainDTO donationTransferReqDTO = null;
+    DonationTransferRequestDomainDTO donationTransferReqDTO = null;
     PaymentTransferAssembler assembler = new PaymentTransferAssembler();
     donationTransferReqDTO = assembler.fromDomainObjectDonationTransfer(donationTransfer);
    
     try
     {
-      MasterpassTransferResponseDomainDTO response = adapter.processMasterpassTransfer(donationTransferReqDTO);
+    	DonationTransferResponseDomainDTO response = adapter.processDonationTransfer(donationTransferReqDTO);
       donationTransfer.getTransactionReference().setExternalReferenceId(response.getHostReference());
     }
     catch (Exception e)

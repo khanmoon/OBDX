@@ -1,4 +1,4 @@
-package com.ofss.digx.datatype;
+package com.ofss.digx.sites.abl.datatype;
 
 import java.io.Serializable;
 

@@ -1,6 +1,9 @@
 package com.ofss.digx.sites.abl.app.payment.assembler.service.transfer;
 
 import com.ofss.digx.app.payment.dto.PaymentDTO;
+import com.ofss.digx.datatype.Address;
+import com.ofss.digx.datatype.CurrencyAmount;
+import com.ofss.digx.datatype.Name;
 import com.ofss.digx.datatype.complex.Account;
 import com.ofss.digx.datatype.complex.Party;
 import com.ofss.digx.domain.payment.entity.TransactionReference;
@@ -13,6 +16,9 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferDetails;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.datatype.CardAcceptor;
+import com.ofss.digx.sites.abl.datatype.MasterpassCard;
+import com.ofss.digx.sites.abl.datatype.MasterpassIdentification;
 import com.ofss.digx.sites.abl.domain.payment.entity.payee.MasterpassPayeeDetails;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MasterpassTransfer;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MasterpassTransferRequest;
@@ -184,11 +190,16 @@ public class MasterpassTransferAssembler
     throws com.ofss.digx.infra.exceptions.Exception
   {
     MasterpassTransferRequest donationTransferRequest = null;
+    CardAcceptor cardAcceptor = null;
+    MasterpassIdentification masterpassIdentification = null;
+    MasterpassCard masterpassCard = null;
     MasterpassTransferRequestDomainDTO request = (MasterpassTransferRequestDomainDTO)arg0[0];
-    Beneficiary beneficiary = new Beneficiary();
+    Address masterpassAddress = new Address();
+    CurrencyAmount amount = new CurrencyAmount();
+    Name masterpassName = new Name();
     if (request != null)
     {
-      donationTransferRequest = new MasterpassTransferRequest("Donation");
+      donationTransferRequest = new MasterpassTransferRequest("MasterpassPayment");
       if (request.getDictionaryArray() != null) {
         donationTransferRequest.setDictionaryArray(toDictionary(request.getDictionaryArray()));
       }
@@ -196,7 +207,30 @@ public class MasterpassTransferAssembler
 //      donationTransferRequest.setBillerId(request.getBillerId());
 //      donationTransferRequest.setAmount(request.getPmtAmount());
       
-      donationTransferRequest.setReferenceNo(request.getSystemReferenceNumber());
+      donationTransferRequest.setTransactionReference(request.getSystemReferenceNumber());
+      cardAcceptor.setCountry(request.getRecipient_address_country());
+      cardAcceptor.setName(request.getCard_acceptor_name());
+      cardAcceptor.setPostalCode(request.getRecipient_address_postalcode());
+      cardAcceptor.setState(request.getRecipient_address_state());
+      cardAcceptor.setCity(request.getRecipient_address_city());
+      donationTransferRequest.getFundingCard().setAccountNumber(request.getCreditAccountId());
+      donationTransferRequest.getReceivingCard().setAccountNumber(request.getDebitAccountId());
+      donationTransferRequest.setLanguageIdentification("ENG");
+      masterpassAddress.setLine1(request.getSender_address_line1());
+      masterpassAddress.setCity(request.getSender_address_city());
+      masterpassAddress.setState(request.getSender_address_state());
+      masterpassAddress.setCountry(request.getSender_address_country());
+      masterpassAddress.setZipCode(request.getSender_address_postalcode());
+      donationTransferRequest.setSenderAddress(masterpassAddress);
+      masterpassName.setFirstName(request.getSender_first_name());
+      masterpassName.setMiddleName(request.getSender_middle_name());
+      masterpassName.setLastName(request.getSender_last_name());
+      donationTransferRequest.setSenderName(masterpassName);
+      amount.setAmount(request.getPmtAmount().getAmount());
+      amount.setCurrency(request.getPmtAmount().getCurrency());
+      donationTransferRequest.setReceivingAmount(amount);
+      donationTransferRequest.setCardAcceptor(cardAcceptor);
+      
     }
     return donationTransferRequest;
   }

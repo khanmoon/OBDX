@@ -1,5 +1,8 @@
 package testingApp;
 
+import com.ofss.digx.app.party.dto.AddressListResponse;
+import com.ofss.digx.datatype.Address;
+import com.ofss.digx.datatype.Name;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MasterpassTransferRequest;
 import java.io.File;
 
@@ -14,6 +17,14 @@ public class MainClass {
 		
 		MasterpassTransferRequest donationTransferRequest = new MasterpassTransferRequest();
 		donationTransferRequest = new MasterpassTransferRequest("Donation");
+		Name receiverName = new Name();
+		receiverName.setFirstName("mansoor");
+		receiverName.setLastName("Naseer");
+		Address a = new Address();
+		a.setCity("karachi");
+		a.setCountry("pakistan");
+		donationTransferRequest.setSenderAddress(a);
+		donationTransferRequest.setReceiverName(receiverName);
 //		System.out.println(donationTransferRequest.toString());
 //	      if (request.getDictionaryArray() != null) {
 //	        donationTransferRequest.setDictionaryArray(toDictionary(request.getDictionaryArray()));

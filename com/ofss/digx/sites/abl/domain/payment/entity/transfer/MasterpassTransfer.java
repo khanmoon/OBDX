@@ -22,6 +22,7 @@ public class MasterpassTransfer
   private String transfer_reference;
   private String sender_first_name;
   private String sender_last_name;
+  private String sender_middle_name;
   private String sender_address_city;
   private String sender_address_postalcode;
   private String sender_address_country;
@@ -38,9 +39,44 @@ public class MasterpassTransfer
   private String merchant_category_code;
   private String transaction_local_date_time;
   private String card_acceptor_name;
+  private String sender_email;
+  private String sender_phone;
+  private String sender_dob;
   
 
-  public String getPartnerId() {
+  public String getSender_middle_name() {
+	return sender_middle_name;
+}
+
+public void setSender_middle_name(String sender_middle_name) {
+	this.sender_middle_name = sender_middle_name;
+}
+
+public String getSender_email() {
+	return sender_email;
+}
+
+public void setSender_email(String sender_email) {
+	this.sender_email = sender_email;
+}
+
+public String getSender_phone() {
+	return sender_phone;
+}
+
+public void setSender_phone(String sender_phone) {
+	this.sender_phone = sender_phone;
+}
+
+public String getSender_dob() {
+	return sender_dob;
+}
+
+public void setSender_dob(String sender_dob) {
+	this.sender_dob = sender_dob;
+}
+
+public String getPartnerId() {
 	return partnerId;
 }
 
