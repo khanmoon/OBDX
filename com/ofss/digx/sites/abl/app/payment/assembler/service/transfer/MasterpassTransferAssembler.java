@@ -192,9 +192,9 @@ public class MasterpassTransferAssembler
       if (request.getDictionaryArray() != null) {
         donationTransferRequest.setDictionaryArray(toDictionary(request.getDictionaryArray()));
       }
-      donationTransferRequest.setSrcAccount(request.getSrcAccount());
-      donationTransferRequest.setBillerId(request.getBillerId());
-      donationTransferRequest.setAmount(request.getPmtAmount());
+//      donationTransferRequest.setSrcAccount(request.getSrcAccount());
+//      donationTransferRequest.setBillerId(request.getBillerId());
+//      donationTransferRequest.setAmount(request.getPmtAmount());
       
       donationTransferRequest.setReferenceNo(request.getSystemReferenceNumber());
     }
