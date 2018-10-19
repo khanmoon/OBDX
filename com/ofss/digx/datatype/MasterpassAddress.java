@@ -2,7 +2,7 @@ package com.ofss.digx.datatype;
 
 import java.io.Serializable;
 
-public class ReceiverAddress
+public class MasterpassAddress
   implements Serializable
 {
   private static final long serialVersionUID = 8869683895936076272L;
@@ -46,7 +46,5 @@ public class ReceiverAddress
 		return "SenderAddress [Line1=" + Line1 + ", City=" + City + ", CountrySubdivision=" + CountrySubdivision
 				+ ", PostalCode=" + PostalCode + ", Country=" + Country + "]";
 	}
-  
-  
   
 }

@@ -2,7 +2,7 @@ package com.ofss.digx.datatype;
 
 import java.io.Serializable;
 
-public class SenderName
+public class MasterpassName
   implements Serializable
 {
   private static final long serialVersionUID = 8869683895936076272L;

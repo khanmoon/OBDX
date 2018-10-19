@@ -16,6 +16,7 @@ public class ReceivingAmount
 		Value = value;
 	}
 	public String getCurrency() {
+		
 		return Currency;
 	}
 	public void setCurrency(String currency) {

@@ -2,7 +2,7 @@ package com.ofss.digx.datatype;
 
 import java.io.Serializable;
 
-public class ReceivingCard
+public class MasterpassCard
   implements Serializable
 {
   private static final long serialVersionUID = 8869683895936076272L;
