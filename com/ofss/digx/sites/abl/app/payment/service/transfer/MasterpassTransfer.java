@@ -324,10 +324,10 @@ public class MasterpassTransfer
       catch (Exception e) {
         e.printStackTrace();
       }
-      UserProfileResponse userProfileResponse = null;
-      AddressListResponse addressListResponse = null;
-      PartyAddressRequestDTO partyAddressRequestDTO = null;
-      List<AddressType> addressTypesFilter = null;
+      UserProfileResponse userProfileResponse =new UserProfileResponse();
+      AddressListResponse addressListResponse = new AddressListResponse();
+      PartyAddressRequestDTO partyAddressRequestDTO = new PartyAddressRequestDTO();
+      List<AddressType> addressTypesFilter = new ArrayList<AddressType>();
       com.ofss.digx.app.user.service.User user = new com.ofss.digx.app.user.service.User();
       userProfileResponse = user.fetchProfile(sessionContext);
       addressTypesFilter.add(AddressType.RESIDENTIAL);
