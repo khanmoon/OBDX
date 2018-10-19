@@ -188,7 +188,7 @@ public class MasterpassTransferAssembler
     Beneficiary beneficiary = new Beneficiary();
     if (request != null)
     {
-      donationTransferRequest = new MasterpassTransferRequest("Donation");
+      donationTransferRequest = new MasterpassTransferRequest("MasterpassPayment");
       if (request.getDictionaryArray() != null) {
         donationTransferRequest.setDictionaryArray(toDictionary(request.getDictionaryArray()));
       }
