@@ -239,9 +239,9 @@ public MasterpassTransferRequestDomainDTO fromDomainObjectMasterpassTransfer(Mas
 	      masterpassTransferRequestDomainDTO.setSender_address_postalcode(masterpassTransfer.getSender_address_postalcode());
 	      masterpassTransferRequestDomainDTO.setSender_address_state(masterpassTransfer.getSender_address_state());
 	      masterpassTransferRequestDomainDTO.setSender_address_line1(masterpassTransfer.getSender_address_line1());
-	      masterpassTransferRequestDomainDTO.setRecipient_address_city(masterpassTransfer.getSender_address_city());
-	      masterpassTransferRequestDomainDTO.setRecipient_address_country(masterpassTransfer.getSender_address_country());
-	      masterpassTransferRequestDomainDTO.setRecipient_address_postalcode(masterpassTransfer.getSender_address_postalcode());
+	      masterpassTransferRequestDomainDTO.setRecipient_address_city(masterpassTransfer.getRecipient_address_city());
+	      masterpassTransferRequestDomainDTO.setRecipient_address_country(masterpassTransfer.getRecipient_address_country());
+	      masterpassTransferRequestDomainDTO.setRecipient_address_postalcode(masterpassTransfer.getRecipient_address_postalcode());
 	      masterpassTransferRequestDomainDTO.setPurpose(masterpassTransfer.getPurpose());
 	      masterpassTransferRequestDomainDTO.setPartyId(masterpassTransfer.getPartyId());
 	      masterpassTransferRequestDomainDTO.setDebitAccountId(masterpassTransfer.getDebitAccountId());

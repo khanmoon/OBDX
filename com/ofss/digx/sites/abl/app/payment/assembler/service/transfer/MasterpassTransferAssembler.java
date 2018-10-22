@@ -190,9 +190,10 @@ public class MasterpassTransferAssembler
     throws com.ofss.digx.infra.exceptions.Exception
   {
     MasterpassTransferRequest donationTransferRequest = null;
-    CardAcceptor cardAcceptor = null;
-    MasterpassIdentification masterpassIdentification = null;
-    MasterpassCard masterpassCard = null;
+    CardAcceptor cardAcceptor = new CardAcceptor();
+    MasterpassIdentification masterpassIdentification = new MasterpassIdentification();
+    MasterpassCard FundingmasterpassCard = new MasterpassCard();
+    MasterpassCard RecevingmasterpassCard = new MasterpassCard();
     MasterpassTransferRequestDomainDTO request = (MasterpassTransferRequestDomainDTO)arg0[0];
     Address masterpassAddress = new Address();
     CurrencyAmount amount = new CurrencyAmount();
@@ -206,15 +207,17 @@ public class MasterpassTransferAssembler
 //      donationTransferRequest.setSrcAccount(request.getSrcAccount());
 //      donationTransferRequest.setBillerId(request.getBillerId());
 //      donationTransferRequest.setAmount(request.getPmtAmount());
-      
+      donationTransferRequest.setReferenceNo(request.getSystemReferenceNumber());
       donationTransferRequest.setTransactionReference(request.getSystemReferenceNumber());
       cardAcceptor.setCountry(request.getRecipient_address_country());
       cardAcceptor.setName(request.getCard_acceptor_name());
       cardAcceptor.setPostalCode(request.getRecipient_address_postalcode());
       cardAcceptor.setState(request.getRecipient_address_state());
       cardAcceptor.setCity(request.getRecipient_address_city());
-      donationTransferRequest.getFundingCard().setAccountNumber(request.getCreditAccountId());
-      donationTransferRequest.getReceivingCard().setAccountNumber(request.getDebitAccountId());
+      FundingmasterpassCard.setAccountNumber(request.getDebitAccountId());
+      donationTransferRequest.setFundingCard(FundingmasterpassCard);
+      RecevingmasterpassCard.setAccountNumber(request.getCreditAccountId());
+      donationTransferRequest.setReceivingCard(RecevingmasterpassCard);
       donationTransferRequest.setLanguageIdentification("ENG");
       masterpassAddress.setLine1(request.getSender_address_line1());
       masterpassAddress.setCity(request.getSender_address_city());

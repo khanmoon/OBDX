@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name="", propOrder={"LocalDate", "LocalTime", "TransactionReference", "SenderName", "SenderPhone", "SenderDateOfBirth", "SenderAddress", "SenderIdentification", "SenderNationality", "SenderCountryOfBirth", "FundingCard", "FundingSource", "AdditionalMessage", "ParticipationID", "LanguageIdentification", "LanguageData", "ReceiverName", "ReceiverAddress", "ReceiverPhone", "ReceiverDateOfBirth", "ReceiverIdentification", "ReceiverNationality", "ReceiverCountryOfBirth", "ReceivingCard","ReceivingAmount", "Channel", "ICA", "ProcessorId", "RoutingAndTransitNumber", "CardAcceptor", "TransactionDesc", "MerchantId", "TransactionPurpose"})
-@XmlRootElement(name="PaymentRequestV3")
+@XmlRootElement(name="MasterpassTransferRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MasterpassTransferRequest
   extends ExternalSystemRequest
@@ -43,7 +43,7 @@ public class MasterpassTransferRequest
   @XmlElement(name="FundingCard", required=true)
   private MasterpassCard FundingCard;
   @XmlElement(name="FundingSource", required=true)
-  private MasterpassCard FundingSource;
+  private String FundingSource;
   @XmlElement(name="AdditionalMessage", required=true)
   private String AdditionalMessage;
   @XmlElement(name="ParticipationID", required=true)
@@ -193,11 +193,11 @@ public MasterpassTransferRequest() {}
 		FundingCard = fundingCard;
 	}
 	
-	public MasterpassCard getFundingSource() {
+	public String getFundingSource() {
 		return FundingSource;
 	}
 	
-	public void setFundingSource(MasterpassCard fundingSource) {
+	public void setFundingSource(String fundingSource) {
 		FundingSource = fundingSource;
 	}
 	

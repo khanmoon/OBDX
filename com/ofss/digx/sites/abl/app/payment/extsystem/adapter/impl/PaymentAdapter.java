@@ -243,9 +243,9 @@ public MasterpassTransferResponseDomainDTO processMasterpassTransfer(MasterpassT
 	System.out.println(masterpassTransferReqDTO.toString());
     if (logger.isLoggable(Level.FINE)) {
     logger.log(Level.FINE, formatter
-      .formatMessage("Entered in method processDonationTransfer of %s used for donation transfer, %s", new Object[] { THIS_COMPONENT_NAME, masterpassTransferReqDTO }));
+      .formatMessage("Entered in method processDonationTransfer of %s used for masterpass transfer, %s", new Object[] { THIS_COMPONENT_NAME, masterpassTransferReqDTO }));
   }
-  super.checkRequest("com.ofss.digx.extxface.payments.impl.PaymentAdapter.processDonationTransfer", new Object[] { masterpassTransferReqDTO });
+  super.checkRequest("com.ofss.digx.extxface.payments.impl.PaymentAdapter.processMasterpassTransfer", new Object[] { masterpassTransferReqDTO });
   
   AdapterInteraction.begin();
   MasterpassTransferResponseDomainDTO donationTransferResponse = null;
@@ -261,7 +261,7 @@ public MasterpassTransferResponseDomainDTO processMasterpassTransfer(MasterpassT
   }
   catch (Exception e)
   {
-    logger.log(Level.SEVERE, formatter.formatMessage(" Exception has occured while getting response object of %s inside the processDonationTransfer method of %s for %s. Exception details are %s", new Object[] {DonationTransferRequestDomainDTO.class
+    logger.log(Level.SEVERE, formatter.formatMessage(" Exception has occured while getting response object of %s inside the processDonationTransfer method of %s for %s. Exception details are %s", new Object[] {MasterpassTransferRequestDomainDTO.class
     
       .getName(), THIS_COMPONENT_NAME, masterpassTransferReqDTO, e }));
   }
