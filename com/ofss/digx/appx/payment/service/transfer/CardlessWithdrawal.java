@@ -262,88 +262,52 @@ public class CardlessWithdrawal
   @Path("/{accountId}/transactions")
   public Response fetchTransactions(@PathParam("accountId") Account accountId, @QueryParam("fromDate") Date fromDate, @QueryParam("toDate") Date toDate, @QueryParam("noOfTransactions") Integer lastNoOfTransactions, @QueryParam("transactionType") TransactionType transactionType, @QueryParam("searchBy") SearchByType searchCriteria, @QueryParam("fromAmount") String fromAmount, @QueryParam("toAmount") String toAmount, @QueryParam("referenceNo") String referenceNo, @QueryParam("narration") String narration)
    {
-	  if (this.logger.isLoggable(Level.FINE)) {
-	      this.logger.log(Level.FINE, this.formatter.formatMessage("Entered into fetchTransactions in REST %s: accountId=%s, fromDate=%s, toDate=%s, lastNoOfTransactions=%s, searchCriteria=%s", new Object[] { THIS_COMPONENT_NAME, accountId, fromDate, toDate, lastNoOfTransactions, searchCriteria }));
+	  if (logger.isLoggable(Level.FINE)) {
+	      logger.log(Level.FINE, formatter.formatMessage("Entering read of merchantTransfer Rest service, payment Id: %s", new Object[] { accountId }));
 	    }
-	    ChannelContext channelContext = null;
+	  	ChannelContext channelContext = null;
 	    DemandDepositAccountActivityRequestDTO accountActivityRequestDTO = new DemandDepositAccountActivityRequestDTO();
 	    Response response = null;
 	    DemandDepositAccountActivityResponseDTO accountActivityResponse = null;
 	    ChannelInteraction channelInteraction = ChannelInteraction.getInstance();
 	    try
 	    {
-	      channelContext = super.getChannelContext();
-	      channelInteraction.begin(channelContext);
-	      accountActivityRequestDTO.setAccountId(accountId);
-	      accountActivityRequestDTO.setSearchByType(searchCriteria);
-	      accountActivityRequestDTO.setTransactionType(transactionType);
-	      accountActivityRequestDTO.setNoOfTransactions(lastNoOfTransactions);
-	      accountActivityRequestDTO.setFromDate(fromDate);
-	      accountActivityRequestDTO.setToDate(toDate);
-	      if (fromAmount != null) {
-	        accountActivityRequestDTO.setFromAmount(new CurrencyAmount(new BigDecimal(fromAmount), null));
-	      }
-	      if (toAmount != null) {
-	        accountActivityRequestDTO.setToAmount(new CurrencyAmount(new BigDecimal(toAmount), null));
-	      }
-	      accountActivityRequestDTO.setReferenceNo(referenceNo);
-	      com.ofss.digx.app.dda.service.core.DemandDeposit demandDepositService = new com.ofss.digx.app.dda.service.core.DemandDeposit();
-	      accountActivityResponse = demandDepositService.fetchTransactions(channelContext.getSessionContext(), accountActivityRequestDTO);
-	      Lock lock = new ReentrantLock();
-	      DataTransferObject entity = accountActivityRequestDTO;
-	      Writer writer = new StringWriter();
-	      JAXBContext jaxbContext = null;
-	      Marshaller jaxbMarhsaller = null;
-	      String entityXml = null;
-	      String entityClassName = entity.getClass().getName();	      
-	      jaxbContext = JAXBContext.newInstance(new Class[] { entity.getClass() });
-	      jaxbMarhsaller = jaxbContext.createMarshaller();
-	      jaxbMarhsaller.setProperty("jaxb.formatted.output", Boolean.valueOf(true));
-	      jaxbMarhsaller.marshal(entity, writer);
-	      entityXml = writer.toString();
-	      String entityTransformationXsl = "resources/" + entityClassName.replaceAll("\\.", "/");
-	      lock.lock();
-	      FOProcessor processor = new FOProcessor();
-	      processor.setOutputFormat((byte)1);
-	      processor.setData(new StringReader(entityXml));
-	      processor.setTemplate(entity
-	        .getClass().getClassLoader().getResourceAsStream(entityTransformationXsl.concat(".xsl")));
-	      processor.setOutput(new FileOutputStream("resources/"+System.currentTimeMillis()+".pdf"));
-	      processor.generate();
-	      response = buildResponse(accountActivityResponse, Response.Status.OK);
+	    	channelContext = super.getChannelContext();
+	        channelInteraction.begin(channelContext);
+	        accountActivityRequestDTO.setAccountId(accountId);
+	        accountActivityRequestDTO.setSearchByType(searchCriteria);
+	        accountActivityRequestDTO.setTransactionType(transactionType);
+	        accountActivityRequestDTO.setNoOfTransactions(lastNoOfTransactions);
+	        accountActivityRequestDTO.setFromDate(fromDate);
+	        accountActivityRequestDTO.setToDate(toDate);
+	        if (fromAmount != null) {
+	          accountActivityRequestDTO.setFromAmount(new CurrencyAmount(new BigDecimal(fromAmount), null));
+	        }
+	        if (toAmount != null) {
+	          accountActivityRequestDTO.setToAmount(new CurrencyAmount(new BigDecimal(toAmount), null));
+	        }
 	      try
 	      {
-	        channelInteraction.close(channelContext);
+	    	  accountActivityRequestDTO.setReferenceNo(referenceNo);
+	          com.ofss.digx.app.dda.service.core.DemandDeposit demandDepositService = new com.ofss.digx.app.dda.service.core.DemandDeposit();
+	          accountActivityResponse = demandDepositService.fetchTransactions(channelContext.getSessionContext(), accountActivityRequestDTO);
+	          
+	          response = buildResponse(accountActivityResponse, Response.Status.OK);
 	      }
-	      catch (com.ofss.digx.infra.exceptions.Exception e)
+	      catch (Exception e1)
 	      {
-	        this.logger.log(Level.SEVERE, this.formatter
-	          .formatMessage("Error encountered while closing channelContext %s", new Object[] { channelContext }), e);
-	        
-	        response = buildResponse(e, Response.Status.INTERNAL_SERVER_ERROR);
+	        e1.printStackTrace();
 	      }
-	      if (!this.logger.isLoggable(Level.FINE)) {
-	    	  logger.log(Level.FINE, formatter.formatMessage("Entering send of merchantTransfer rest service, payment Id: %s", new Object[] { 123 }));
+	      if (!logger.isLoggable(Level.FINE)) {
+	        return response;
 	      }
 	    }
 	    catch (com.ofss.digx.infra.exceptions.Exception e)
 	    {
-	      this.logger.log(Level.SEVERE, this.formatter
-	        .formatMessage("Exception encountered while invoking the service %s for accountActivityRequestDTO=%s", new Object[] {DemandDeposit.class
-	        
-	        .getName(), accountActivityRequestDTO }), e);
+	      logger.log(Level.SEVERE, formatter.formatMessage("Exception encountered while invoking the read service for payment id=%s", new Object[] { accountId }), e);
 	      
 	      response = buildResponse(e, Response.Status.BAD_REQUEST);
-	    } catch (JAXBException e1) {
-			
-			e1.printStackTrace();
-		} catch (FileNotFoundException e1) {
-			
-			e1.printStackTrace();
-		} catch (XDOException e1) {
-			
-			e1.printStackTrace();
-		}
+	    }
 	    finally
 	    {
 	      try
@@ -352,14 +316,14 @@ public class CardlessWithdrawal
 	      }
 	      catch (com.ofss.digx.infra.exceptions.Exception e)
 	      {
-	        this.logger.log(Level.SEVERE, this.formatter
+	        logger.log(Level.SEVERE, formatter
 	          .formatMessage("Error encountered while closing channelContext %s", new Object[] { channelContext }), e);
-	        
 	        response = buildResponse(e, Response.Status.INTERNAL_SERVER_ERROR);
 	      }
 	    }
-	    this.logger.log(Level.FINE, this.formatter
-	      .formatMessage("Exiting fetchTransactions of Demand Deposit REST service, accountActivityResponse: %s", new Object[] { accountActivityResponse }));
+	    
+	    logger.log(Level.FINE, formatter.formatMessage("Exiting from read() : paymentId=%s", new Object[] { accountId }));
+	    
 	    return response;
-	}
+    }
 }
