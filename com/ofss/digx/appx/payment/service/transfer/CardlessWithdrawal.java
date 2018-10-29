@@ -280,7 +280,6 @@ public class CardlessWithdrawal
 	      accountActivityRequestDTO.setNoOfTransactions(lastNoOfTransactions);
 	      accountActivityRequestDTO.setFromDate(fromDate);
 	      accountActivityRequestDTO.setToDate(toDate);
-	      //accountActivityRequestDTO.setNarration(narration);
 	      if (fromAmount != null) {
 	        accountActivityRequestDTO.setFromAmount(new CurrencyAmount(new BigDecimal(fromAmount), null));
 	      }
@@ -290,10 +289,6 @@ public class CardlessWithdrawal
 	      accountActivityRequestDTO.setReferenceNo(referenceNo);
 	      com.ofss.digx.app.dda.service.core.DemandDeposit demandDepositService = new com.ofss.digx.app.dda.service.core.DemandDeposit();
 	      accountActivityResponse = demandDepositService.fetchTransactions(channelContext.getSessionContext(), accountActivityRequestDTO);
-	      
-	      
-	      
-	      
 	      Lock lock = new ReentrantLock();
 	      DataTransferObject entity = accountActivityRequestDTO;
 	      Writer writer = new StringWriter();
@@ -315,10 +310,6 @@ public class CardlessWithdrawal
 	        .getClass().getClassLoader().getResourceAsStream(entityTransformationXsl.concat(".xsl")));
 	      processor.setOutput(new FileOutputStream("resources/"+System.currentTimeMillis()+".pdf"));
 	      processor.generate();
-	      
-	      
-	      
-	      
 	      response = buildResponse(accountActivityResponse, Response.Status.OK);
 	      try
 	      {
@@ -344,13 +335,13 @@ public class CardlessWithdrawal
 	      
 	      response = buildResponse(e, Response.Status.BAD_REQUEST);
 	    } catch (JAXBException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		} catch (XDOException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 	    finally
