@@ -23,12 +23,20 @@ import com.ofss.fc.datatype.Date;
 import com.ofss.fc.framework.domain.common.dto.DataTransferObject;
 import com.ofss.fc.infra.log.impl.MultiEntityLogger;
 
+import oracle.apps.xdo.XDOException;
+import oracle.apps.xdo.template.FOProcessor;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
@@ -44,6 +52,9 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 public class CardlessWithdrawal
   extends AbstractRESTApplication
@@ -279,13 +290,35 @@ public class CardlessWithdrawal
 	      accountActivityRequestDTO.setReferenceNo(referenceNo);
 	      com.ofss.digx.app.dda.service.core.DemandDeposit demandDepositService = new com.ofss.digx.app.dda.service.core.DemandDeposit();
 	      accountActivityResponse = demandDepositService.fetchTransactions(channelContext.getSessionContext(), accountActivityRequestDTO);
-	      PDFContentPublisher pc = new PDFContentPublisher();
-	      try {
-			pc.publish((DataTransferObject)accountActivityResponse,new MediaType(),(MultivaluedMap<String, Object>)new MultivaluedHashMap(),(OutputStream)new FileOutputStream("resources"+System.currentTimeMillis()+".pdf"),new Locale("en"),"pdf");
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	      
+	      
+	      
+	      
+	      Lock lock = new ReentrantLock();
+	      DataTransferObject entity = accountActivityRequestDTO;
+	      Writer writer = new StringWriter();
+	      JAXBContext jaxbContext = null;
+	      Marshaller jaxbMarhsaller = null;
+	      String entityXml = null;
+	      String entityClassName = entity.getClass().getName();	      
+	      jaxbContext = JAXBContext.newInstance(new Class[] { entity.getClass() });
+	      jaxbMarhsaller = jaxbContext.createMarshaller();
+	      jaxbMarhsaller.setProperty("jaxb.formatted.output", Boolean.valueOf(true));
+	      jaxbMarhsaller.marshal(entity, writer);
+	      entityXml = writer.toString();
+	      String entityTransformationXsl = "resources/" + entityClassName.replaceAll("\\.", "/");
+	      lock.lock();
+	      FOProcessor processor = new FOProcessor();
+	      processor.setOutputFormat((byte)1);
+	      processor.setData(new StringReader(entityXml));
+	      processor.setTemplate(entity
+	        .getClass().getClassLoader().getResourceAsStream(entityTransformationXsl.concat(".xsl")));
+	      processor.setOutput(new FileOutputStream("resources/"+System.currentTimeMillis()+".pdf"));
+	      processor.generate();
+	      
+	      
+	      
+	      
 	      response = buildResponse(accountActivityResponse, Response.Status.OK);
 	      try
 	      {
@@ -310,7 +343,16 @@ public class CardlessWithdrawal
 	        .getName(), accountActivityRequestDTO }), e);
 	      
 	      response = buildResponse(e, Response.Status.BAD_REQUEST);
-	    }
+	    } catch (JAXBException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (XDOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	    finally
 	    {
 	      try
