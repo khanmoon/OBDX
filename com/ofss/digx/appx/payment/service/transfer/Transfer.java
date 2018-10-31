@@ -138,6 +138,20 @@ public class Transfer
 	cardlessWithdrawal.setSecurityContext(getSecurityContext());
     return cardlessWithdrawal;
   }
+
+
+  @Path("/zakatdonation")
+  public ZakatDonation ZakatDonationTransfer()
+  {
+	  ZakatDonation zakatDonation = new ZakatDonation();
+	  zakatDonation.setHttpResponse(getHttpResponse());
+	  zakatDonation.setHttpRequest(getHttpRequest());
+	  zakatDonation.setUriInfo(getUriInfo());
+	  zakatDonation.setSecurityContext(getSecurityContext());
+    return zakatDonation;
+  }
+  
+
   /*
   @Path("/otp")
   public OTPTransfer oTPTransfer()
