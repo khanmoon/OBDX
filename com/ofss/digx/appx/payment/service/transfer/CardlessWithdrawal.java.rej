@@ -1,0 +1,18 @@
+diff a/com/ofss/digx/appx/payment/service/transfer/CardlessWithdrawal.java b/com/ofss/digx/appx/payment/service/transfer/CardlessWithdrawal.java	(rejected hunks)
+@@ -19,7 +19,16 @@
+ import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalReadResponse;
+ import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalResponse;
+ import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalUpdateRequestDTO;
++import com.ofss.fc.datatype.Date;
++import com.ofss.fc.framework.domain.common.dto.DataTransferObject;
+ import com.ofss.fc.infra.log.impl.MultiEntityLogger;
++
++import java.io.FileNotFoundException;
++import java.io.FileOutputStream;
++import java.io.OutputStream;
++import java.math.BigDecimal;
++import java.util.HashMap;
++import java.util.Locale;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
+ import javax.ws.rs.Consumes;
