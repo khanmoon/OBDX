@@ -20,14 +20,21 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalReadRe
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalResponse;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.CardlessWithdrawalUpdateRequestDTO;
 import com.ofss.fc.datatype.Date;
+import com.ofss.fc.domain.ep.entity.dispatch.EmailDispatchDetail;
+import com.ofss.fc.domain.ep.service.dispatch.EmailDispatcher;
 import com.ofss.fc.framework.domain.common.dto.DataTransferObject;
 import com.ofss.fc.infra.log.impl.MultiEntityLogger;
 
 import oracle.apps.xdo.XDOException;
 import oracle.apps.xdo.template.FOProcessor;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -35,10 +42,27 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.mail.Authenticator;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.MimetypesFileTypeMap;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -292,6 +316,62 @@ public class CardlessWithdrawal
 	          com.ofss.digx.app.dda.service.core.DemandDeposit demandDepositService = new com.ofss.digx.app.dda.service.core.DemandDeposit();
 	          accountActivityResponse = demandDepositService.fetchTransactions(channelContext.getSessionContext(), accountActivityRequestDTO);
 	          
+	          Lock lock = new ReentrantLock();
+	          DataTransferObject entity = accountActivityResponse;
+	          Writer writer = new StringWriter();
+	          JAXBContext jaxbContext = null;
+	          Marshaller jaxbMarhsaller = null;
+	          String entityXml = null;
+	          String entityClassName = entity.getClass().getName();          
+	          jaxbContext = JAXBContext.newInstance(new Class[] { entity.getClass() });
+	          jaxbMarhsaller = jaxbContext.createMarshaller();
+	          jaxbMarhsaller.setProperty("jaxb.formatted.output", Boolean.valueOf(true));
+	          jaxbMarhsaller.marshal(entity, writer);
+	          entityXml = writer.toString();
+	          String entityTransformationXsl = "resources/" + entityClassName.replaceAll("\\.", "/");
+	          lock.lock();
+	          FOProcessor processor = new FOProcessor();
+//	          processor.setOutputFormat((byte)1);
+	          processor.setOutputFormat(FOProcessor.FORMAT_PDF);
+	          processor.setData(new StringReader(entityXml));
+	          processor.setTemplate(entity
+	            .getClass().getClassLoader().getResourceAsStream(entityTransformationXsl.concat(".xsl")));
+	          ByteArrayOutputStream baos = new ByteArrayOutputStream();	          
+	          processor.setOutput(baos);
+	          processor.generate();
+	          
+	          Properties props = new Properties();
+		        props.put("mail.transport.protocol", "smtp");
+		        props.put("mail.smtp.host", "smtp.sendgrid.net");
+		        props.put("mail.smtp.port", 587);
+		        props.put("mail.smtp.auth", "true");
+		        
+		        Authenticator auth = new SMTPAuthenticator();
+		        Session mailSession = Session.getInstance(props, auth);
+		        Transport transport = mailSession.getTransport();
+		 
+		        MimeMessage message = new MimeMessage(mailSession);
+		 
+		        Multipart multipart = new MimeMultipart("alternative");
+		        BodyPart part1 = new MimeBodyPart();
+		        part1.setText("Dummy");
+		        multipart.addBodyPart(part1);
+		        MimeBodyPart attachmentPart = new MimeBodyPart();
+		        InputStream targetStream = new ByteArrayInputStream(baos.toByteArray());
+		        DataSource source = new InputStreamDataSource(targetStream,"test");
+		        attachmentPart.setDataHandler(new DataHandler(source));
+		        attachmentPart.setFileName("dummy.pdf");
+		        multipart.addBodyPart(attachmentPart);
+
+		        message.setContent(multipart);
+		        message.setFrom(new InternetAddress("mansoor.naseer@techlogix.com"));
+		        message.setSubject("dummy");
+		        message.addRecipient(Message.RecipientType.TO, new InternetAddress("mansoor.naseer@hotmail.com"));
+		 
+		        transport.connect();
+		        transport.sendMessage(message,
+		           message.getRecipients(Message.RecipientType.TO));
+		        transport.close();
 	          response = buildResponse(accountActivityResponse, Response.Status.OK);
 	      }
 	      catch (Exception e1)
@@ -326,4 +406,53 @@ public class CardlessWithdrawal
 	    
 	    return response;
     }
+  public class InputStreamDataSource implements DataSource {
+
+      ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+      private final String name;
+
+      public InputStreamDataSource(InputStream inputStream, String name) {
+          this.name = name;
+          try {
+              int nRead;
+              byte[] data = new byte[16384];
+              while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+              }
+              inputStream.close();
+              buffer.flush();
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+
+      }
+
+      @Override
+      public String getContentType() {            
+          return new MimetypesFileTypeMap().getContentType(name);
+      }
+
+      @Override
+      public InputStream getInputStream() throws IOException {
+              return new ByteArrayInputStream(buffer.toByteArray());
+      }
+
+      @Override
+      public String getName() {
+         return name;
+      }
+
+      @Override
+      public OutputStream getOutputStream() throws IOException {
+          throw new IOException("Read-only data");
+      }
+
+  }
+  	private class SMTPAuthenticator extends javax.mail.Authenticator {
+      public PasswordAuthentication getPasswordAuthentication() {
+         String username = "mansoor.naseer";
+         String password = "Reach@5042281";
+         return new PasswordAuthentication(username, password);
+      }
+  }
 }
