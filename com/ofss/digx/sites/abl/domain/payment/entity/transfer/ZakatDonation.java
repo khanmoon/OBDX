@@ -18,7 +18,8 @@ public class ZakatDonation
 {
   private static final long serialVersionUID = -4960596856991625778L;
   private String creditAccountId;
-  private ArrayList<String> companiesList;
+  private ArrayList<ZakatDonationCompanyDetails> companiesList;
+  
   
   public String getCreditAccountId()
   {
@@ -31,12 +32,12 @@ public class ZakatDonation
   }
  
   
-  public void setCompaniesList(ArrayList<String> companiesList)
+  public void setCompaniesList(ArrayList<ZakatDonationCompanyDetails> companiesList)
   {
 	 this.companiesList = companiesList;
   }
   
-  public ArrayList<String> getCompaniesList()
+  public ArrayList<ZakatDonationCompanyDetails> getCompaniesList()
   {
 	  return this.companiesList;
   }
@@ -51,22 +52,11 @@ public class ZakatDonation
     throws Exception
   {
 	  // Hard coded data (Will call adapter later)
-	  ZakatDonation _zakatDonation = new ZakatDonation();
-	  ArrayList<String> companiesList = new ArrayList();
-	  companiesList.add("Prime Minister and Chief Justice of Pakistan Fund for Diamer Bhasha and Mohmand Dam");
-	  companiesList.add("The Citiaen Foundation (TCF)");
-	  companiesList.add("Sindh Institute of Urology and Transplantation (SIUT)");
-	  companiesList.add("Aga Khan University Hospital (AKUH)");
-	  companiesList.add("Zindagi Trust");
-	  companiesList.add("The Kidney Center");
-	  companiesList.add("Shukat Khanum Memorial Trust");
-	  companiesList.add("Indus Hospital");
-	  companiesList.add("Aman Foundation");
-	  companiesList.add("Health and Nutrition Development Society (HANDS)");
-	  companiesList.add("Sahara For Life Trust");
-	  _zakatDonation.companiesList = companiesList;
-	  
-    //return ZakatDonationRepository.getInstance().read(key);
+	  ZakatDonation _zakatDonation = ZakatDonationRepository.getInstance().read(key);
+
+	  //_zakatDonation.setCompaniesList(companiesList);
+	 // _zakatDonation.setKey(key);
+    
 	  return _zakatDonation;
   }
   

@@ -657,4 +657,10 @@ public Response list(Date paramDate1, Date paramDate2, PaymentStatusType paramPa
 	// TODO Auto-generated method stub
 	return null;
 }
+
+@Override
+public Response readCompanyDetails() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }

@@ -65,7 +65,7 @@ public class ZakatDonation
       com.ofss.digx.sites.abl.app.payment.service.transfer.ZakatDonation ZakatDonationService = new com.ofss.digx.sites.abl.app.payment.service.transfer.ZakatDonation();
       readResponse = ZakatDonationService.read(channelContext.getSessionContext(), ZakatDonationReadRequestDTO);
       response = buildResponse(readResponse, Response.Status.OK);
-      try
+/*      try
       {
         channelInteraction.close(channelContext);
       }
@@ -75,7 +75,7 @@ public class ZakatDonation
           .formatMessage("Error encountered while closing channelContext %s", new Object[] { channelContext }), e);
         
         response = buildResponse(e, Response.Status.INTERNAL_SERVER_ERROR);
-      }
+      }*/
 
     }
     catch (Exception e)
@@ -358,4 +358,10 @@ public class ZakatDonation
     label386:
     return response;
   }
+
+@Override
+public Response readCompanyDetails() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }

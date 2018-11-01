@@ -7,6 +7,8 @@ import javax.ws.rs.core.Response;
 
 public abstract interface IZakatDonation
 {
+  public abstract Response readCompanyDetails();
+	
   public abstract Response read(String paramString);
   
   public abstract Response create(ZakatDonationDTO paramZakatDonationDTO);
@@ -16,4 +18,5 @@ public abstract interface IZakatDonation
   public abstract Response delete(String paramString);
   
   public abstract Response list(Date paramDate1, Date paramDate2, PaymentStatusType paramPaymentStatusType);
+
 }

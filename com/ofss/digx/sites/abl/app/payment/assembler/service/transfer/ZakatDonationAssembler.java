@@ -7,6 +7,7 @@ import com.ofss.digx.datatype.complex.Account;
 import com.ofss.digx.datatype.complex.Party;
 import com.ofss.digx.domain.payment.entity.TransactionReference;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation;
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonationCompanyDetails;
 import com.ofss.digx.enumeration.payment.PaymentType;
 import com.ofss.digx.infra.exceptions.Exception;
 import com.ofss.fc.framework.domain.IAbstractDomainObject;
@@ -69,11 +70,11 @@ public class ZakatDonationAssembler
       ZakatDonationDTO.setDebitAccountId(new Account(ZakatDonationDomain
         .getDebitAccountId()));
       
-      ArrayList<String> companiesList = new ArrayList<String>();
+      ArrayList<ZakatDonationCompanyDetails> companiesList = new ArrayList<ZakatDonationCompanyDetails>();
       
       if(ZakatDonationDomain.getCompaniesList().size() > 0)
       {
-          companiesList = ZakatDonationDomain.getCompaniesList();
+          companiesList = (ArrayList<ZakatDonationCompanyDetails>) ZakatDonationDomain.getCompaniesList();
       }
       
       ZakatDonationDTO.setCompaniesList(companiesList); 

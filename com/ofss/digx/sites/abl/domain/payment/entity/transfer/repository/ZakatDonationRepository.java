@@ -31,49 +31,49 @@ public class ZakatDonationRepository
   public ZakatDonation read(PaymentKey key)
     throws Exception
   {
-    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("SELF_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
     return repositoryAdapter.read(key);
   }
   
   public void create(ZakatDonation object)
     throws Exception
   {
-    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("SELF_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
     repositoryAdapter.create(object);
   }
   
   public void update(ZakatDonation object)
     throws Exception
   {
-    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("SELF_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
     repositoryAdapter.update(object);
   }
   
   public void delete(ZakatDonation object)
     throws Exception
   {
-    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("SELF_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
     repositoryAdapter.delete(object);
   }
   
   public List<ZakatDonation> list(String partyId, Date fromDate, Date toDate, PaymentStatusType status)
     throws Exception
   {
-    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("SELF_TRANSFER_PAYMENT_HOST_REPOSITORY_ADAPTER");
+    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
     return repositoryAdapter.list(partyId, fromDate, toDate, status);
   }
   
   public ZakatDonation process(ZakatDonation transfer)
     throws Exception
   {
-    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("SELF_TRANSFER_PAYMENT_HOST_REPOSITORY_ADAPTER");
+    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
     return repositoryAdapter.process(transfer);
   }
   
   public List<ZakatDonation> lastPaymentList(Date filterDate)
     throws Exception
   {
-    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("SELF_TRANSFER_PAYMENT_REPOSITORY_ADAPTER");
+    IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
     return repositoryAdapter.lastPaymentList(filterDate);
   }
 }
