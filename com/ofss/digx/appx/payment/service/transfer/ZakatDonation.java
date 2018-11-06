@@ -126,7 +126,7 @@ public class ZakatDonation
       createResponse = ZakatDonationService.create(channelContext.getSessionContext(), ZakatDonationCreateRequestDTO);
       
       response = buildResponse(createResponse, Response.Status.CREATED);
-      try
+/*      try
       {
         channelInteraction.close(channelContext);
       }
@@ -136,7 +136,7 @@ public class ZakatDonation
           .formatMessage("Error encountered while closing channelContext %s", new Object[] { channelContext }), e);
         
         response = buildResponse(e, Response.Status.INTERNAL_SERVER_ERROR);
-      }
+      }*/
 
     }
     catch (Exception e)
@@ -359,9 +359,64 @@ public class ZakatDonation
     return response;
   }
 
-@Override
-public Response readCompanyDetails() {
-	// TODO Auto-generated method stub
-	return null;
+  @GET
+  @Consumes({"application/json"})
+  @Produces({"application/json"})
+  @Path("/listCompanyDetails")
+  public Response listCompanyDetails() {
+	    if (logger.isLoggable(Level.FINE)) {
+//	        logger.log(Level.FINE, formatter.formatMessage("Entering read of Zakat Donation Rest service, payment Id: %s", new Object[] { paymentId }));
+	      }
+	      Response response = null;
+	      ChannelInteraction channelInteraction = null;
+	      ChannelContext channelContext = null;
+	      ZakatDonationReadResponse readResponse = null;
+	      ZakatDonationReadRequestDTO ZakatDonationReadRequestDTO = null;
+	      try
+	      {
+	        channelContext = super.getChannelContext();
+	        channelInteraction = ChannelInteraction.getInstance();
+	        channelInteraction.begin(channelContext);
+	        ZakatDonationReadRequestDTO = new ZakatDonationReadRequestDTO();
+	        //ZakatDonationReadRequestDTO.setPaymentId(paymentId);
+	        com.ofss.digx.sites.abl.app.payment.service.transfer.ZakatDonation ZakatDonationService = new com.ofss.digx.sites.abl.app.payment.service.transfer.ZakatDonation();
+	        readResponse = ZakatDonationService.listCompanyDetails(channelContext.getSessionContext(), ZakatDonationReadRequestDTO);
+	        response = buildResponse(readResponse, Response.Status.OK);
+	  /*      try
+	        {
+	          channelInteraction.close(channelContext);
+	        }
+	        catch (Exception e)
+	        {
+	          logger.log(Level.SEVERE, formatter
+	            .formatMessage("Error encountered while closing channelContext %s", new Object[] { channelContext }), e);
+	          
+	          response = buildResponse(e, Response.Status.INTERNAL_SERVER_ERROR);
+	        }*/
+
+	      }
+	      catch (Exception e)
+	      {
+	        //logger.log(Level.SEVERE, formatter.formatMessage("Exception encountered while invoking the read service for payment id=%s", new Object[] { paymentId }), e);
+	        
+	        response = buildResponse(e, Response.Status.BAD_REQUEST);
+	      }
+	      finally
+	      {
+	        try
+	        {
+	          channelInteraction.close(channelContext);
+	        }
+	        catch (Exception e)
+	        {
+	          logger.log(Level.SEVERE, formatter
+	            .formatMessage("Error encountered while closing channelContext %s", new Object[] { channelContext }), e);
+	          
+	          response = buildResponse(e, Response.Status.INTERNAL_SERVER_ERROR);
+	        }
+	      }
+	      //logger.log(Level.FINE, formatter.formatMessage("Exiting from read() : paymentId=%s", new Object[] { paymentId }));
+	      
+	      return response;
 }
 }

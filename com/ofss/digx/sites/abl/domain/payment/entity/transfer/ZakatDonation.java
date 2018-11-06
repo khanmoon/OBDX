@@ -18,8 +18,19 @@ public class ZakatDonation
 {
   private static final long serialVersionUID = -4960596856991625778L;
   private String creditAccountId;
+  private String companyID;
+  
   private ArrayList<ZakatDonationCompanyDetails> companiesList;
   
+  public String getCompanyId()
+  {
+	  return this.companyID;
+  }
+  
+  public void setCompanyID(String companyID)
+  {
+	  this.companyID = companyID;
+  }
   
   public String getCreditAccountId()
   {
@@ -30,7 +41,6 @@ public class ZakatDonation
   {
     this.creditAccountId = creditAccountId;
   }
- 
   
   public void setCompaniesList(ArrayList<ZakatDonationCompanyDetails> companiesList)
   {
@@ -41,31 +51,31 @@ public class ZakatDonation
   {
 	  return this.companiesList;
   }
+
   
-  public void create(ZakatDonation transfer)
-    throws Exception
-  {
-    ZakatDonationRepository.getInstance().create(transfer);
-  }
-  
+ 
   public ZakatDonation read(PaymentKey key)
     throws Exception
   {
-	  // Hard coded data (Will call adapter later)
-	  ZakatDonation _zakatDonation = ZakatDonationRepository.getInstance().read(key);
-
-	  //_zakatDonation.setCompaniesList(companiesList);
-	 // _zakatDonation.setKey(key);
-    
+	  ZakatDonation _zakatDonation = ZakatDonationRepository.getInstance().read(key);    
 	  return _zakatDonation;
   }
   
-  public void delete(PaymentKey key)
+  
+  //Get List of All Zakat Companies From DB
+  public ZakatDonation listCompanyDetails()
     throws Exception
   {
-    ZakatDonation ZakatDonationObject = ZakatDonationRepository.getInstance().read(key);
-    ZakatDonationRepository.getInstance().delete(ZakatDonationObject);
+	  ZakatDonation _zakatDonation = ZakatDonationRepository.getInstance().listCompanyDetails();    
+	  return _zakatDonation;
   }
+  
+  public void create(ZakatDonation transfer)
+		    throws Exception
+  {
+	ZakatDonationRepository.getInstance().create(transfer);
+  }
+ 
   
   public void update(ZakatDonation transfer)
     throws Exception
@@ -87,6 +97,13 @@ public class ZakatDonation
     }
     transfer.update(transfer);
     return transfer;
+  }
+  
+  public void delete(PaymentKey key)
+		    throws Exception
+  {
+		    ZakatDonation ZakatDonationObject = ZakatDonationRepository.getInstance().read(key);
+		    ZakatDonationRepository.getInstance().delete(ZakatDonationObject);
   }
   
   public List<ZakatDonation> list(String partyId, Date fromDate, Date toDate, PaymentStatusType status)

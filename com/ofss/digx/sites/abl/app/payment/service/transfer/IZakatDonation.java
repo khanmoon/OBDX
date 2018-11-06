@@ -2,12 +2,13 @@ package com.ofss.digx.sites.abl.app.payment.service.transfer;
 
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationDTO;
 import com.ofss.digx.enumeration.payment.PaymentStatusType;
+import com.ofss.digx.infra.exceptions.Exception;
 import com.ofss.fc.datatype.Date;
 import javax.ws.rs.core.Response;
 
 public abstract interface IZakatDonation
 {
-  public abstract Response readCompanyDetails();
+  public abstract Response listCompanyDetails();
 	
   public abstract Response read(String paramString);
   

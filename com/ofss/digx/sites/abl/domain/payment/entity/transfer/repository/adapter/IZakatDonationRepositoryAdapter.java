@@ -31,4 +31,7 @@ public abstract interface IZakatDonationRepositoryAdapter
   
   public abstract List<ZakatDonation> lastPaymentList(Date paramDate)
     throws Exception;
+  
+  public abstract ZakatDonation listCompanyDetails()
+		    throws Exception;
 }

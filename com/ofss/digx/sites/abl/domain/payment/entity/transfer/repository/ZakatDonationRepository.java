@@ -35,6 +35,14 @@ public class ZakatDonationRepository
     return repositoryAdapter.read(key);
   }
   
+  
+  public ZakatDonation listCompanyDetails()
+throws Exception
+ {
+	  IZakatDonationRepositoryAdapter repositoryAdapter = (IZakatDonationRepositoryAdapter)RepositoryAdapterFactory.getInstance().getRepositoryAdapter("ZAKAT_DONATION_REPOSITORY_ADAPTER");
+	  return repositoryAdapter.listCompanyDetails();
+}
+  
   public void create(ZakatDonation object)
     throws Exception
   {

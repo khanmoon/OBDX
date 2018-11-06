@@ -11,8 +11,30 @@ public class ZakatDonationDTO
   extends PaymentDTO
 {
   private static final long serialVersionUID = -5025245192478218954L;
-  @Mandatory(errorCode="DIGX_PY_0132")
   private ArrayList<ZakatDonationCompanyDetails> companiesList;
+  
+  private Account creditAccountId;
+  private String companyID;
+  
+  public String getCompanyId()
+  {
+	  return this.companyID;
+  }
+  
+  public void setCompanyID(String companyID)
+  {
+	  this.companyID = companyID;
+  }
+  
+  public Account getCreditAccountId()
+  {
+    return this.creditAccountId;
+  }
+  
+  public void setCreditAccountId(Account creditAccountId)
+  {
+    this.creditAccountId = creditAccountId;
+  }
   
   public void setCompaniesList(ArrayList<ZakatDonationCompanyDetails> companiesList)
   {
@@ -23,7 +45,7 @@ public class ZakatDonationDTO
   {
 	  return this.companiesList;
   }
-  
+
   
   public String toString()
   {

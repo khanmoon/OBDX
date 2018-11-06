@@ -297,7 +297,6 @@ public class MasterpassTransfer
       System.out.println("**Debit Account Id =" + donationTransferDomain.getDebitAccountId());
       System.out.println("**Status           =" + donationTransferDomain.getStatus());
       
-
       System.out.println("**About to call system constraint");
       System.out.println("**Debit Account Id =" + donationTransferDomain.getDebitAccountId());
       System.out.println("**Status           =" + donationTransferDomain.getStatus());

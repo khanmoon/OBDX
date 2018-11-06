@@ -44,6 +44,9 @@ public class ZakatDonationAssembler
       ZakatDonationDomain.setAmount(ZakatDonationDTO.getAmount());
       ZakatDonationDomain.setDebitAccountId(ZakatDonationDTO.getDebitAccountId().getValue());
       //ZakatDonationDomain.setCreditAccountId(ZakatDonationDTO.getCreditAccountId().getValue());
+      
+      ZakatDonationDomain.setCompanyID(ZakatDonationDTO.getCompanyId());
+      
       ZakatDonationDomain.setPartyId(ZakatDonationDTO.getPartyId().getValue());
       if (ZakatDonationDTO.getPurpose() != null) {
         if (ZakatDonationDTO.getPurpose().equals("OTH")) {
@@ -60,15 +63,37 @@ public class ZakatDonationAssembler
   }
   
   public ZakatDonationDTO fromSelfDomainObjectRead(ZakatDonation ZakatDonationDomain)
-    throws Exception
+   
+  {
+    ZakatDonationDTO ZakatDonationDTO = null;
+    if (ZakatDonationDomain != null)
+    {
+      ZakatDonationDTO = new ZakatDonationDTO();
+      ZakatDonationDTO.setCompanyID(ZakatDonationDomain.getCompanyId());
+      ZakatDonationDTO.setPartyId(new Party(ZakatDonationDomain.getPartyId()));
+      ZakatDonationDTO.setAmount(ZakatDonationDomain.getAmount());
+      ZakatDonationDTO.setDebitAccountId(new Account(ZakatDonationDomain.getDebitAccountId()));
+      ZakatDonationDTO.setRemarks(ZakatDonationDomain.getRemarks());
+      ZakatDonationDTO.setStatus(ZakatDonationDomain.getStatus());
+      if (ZakatDonationDomain.getTransactionReference() != null) {
+        ZakatDonationDTO.setUserReferenceNo(ZakatDonationDomain.getTransactionReference().getUserReferenceNo());
+      }
+      ZakatDonationDTO.setValueDate(ZakatDonationDomain.getValueDate());
+      ZakatDonationDTO.setDictionaryArray(getDictionaryArray(ZakatDonationDomain));
+    }
+    return ZakatDonationDTO;
+  }
+  
+  
+  public ZakatDonationDTO fromSelfDomainObjectCompanyList(ZakatDonation ZakatDonationDomain)
+  
   {
     ZakatDonationDTO ZakatDonationDTO = null;
     if (ZakatDonationDomain != null)
     {
       ZakatDonationDTO = new ZakatDonationDTO();
       ZakatDonationDTO.setAmount(ZakatDonationDomain.getAmount());
-      ZakatDonationDTO.setDebitAccountId(new Account(ZakatDonationDomain
-        .getDebitAccountId()));
+      ZakatDonationDTO.setDebitAccountId(new Account(ZakatDonationDomain.getDebitAccountId()));
       
       ArrayList<ZakatDonationCompanyDetails> companiesList = new ArrayList<ZakatDonationCompanyDetails>();
       

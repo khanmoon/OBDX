@@ -150,6 +150,77 @@ public class ZakatDonation
     return ZakatDonationReadResponse;
   }
   
+  
+  @Role(roles={com.ofss.digx.enumeration.RoleType.CUSTOMER, com.ofss.digx.enumeration.RoleType.MAKER})
+  public ZakatDonationReadResponse listCompanyDetails(SessionContext sessionContext, ZakatDonationReadRequestDTO ZakatDonationReadRequestDTO)
+    throws com.ofss.digx.infra.exceptions.Exception
+  {
+    if (this.logger.isLoggable(Level.FINE)) {
+      this.logger.log(Level.FINE, this.FORMATTER.formatMessage("Entered into read method of Self Transfer service  Input: ZakatDonationReadRequestDTO: %s in class '%s'", new Object[] { ZakatDonationReadRequestDTO, THIS_COMPONENT_NAME }));
+    }
+    
+    //super.checkAccessPolicy("com.ofss.digx.sites.abl.app.payment.service.transfer.ZakatDonation.read", new Object[] { sessionContext, ZakatDonationReadRequestDTO });
+    
+    super.canonicalizeInput(ZakatDonationReadRequestDTO);
+    Interaction.begin(sessionContext);
+    TransactionStatus status = fetchTransactionStatus();
+    ZakatDonationReadResponse ZakatDonationReadResponse = new ZakatDonationReadResponse();
+    ZakatDonationDTO ZakatDonationDTO = new ZakatDonationDTO();
+    //AbstractBusinessPolicyFactory businessPolicyFactory = null;
+    //AbstractBusinessPolicy abstractBusinessPolicy = null;
+    //ReadZakatDonationBusinessPolicyData businessPolicyData = new ReadZakatDonationBusinessPolicyData();
+    try
+    {
+      ZakatDonationReadRequestDTO.validate(sessionContext);
+      //this.extensionExecutor.preRead(sessionContext, ZakatDonationReadRequestDTO);
+      //businessPolicyData.setZakatDonationReadRequestDTO(ZakatDonationReadRequestDTO);
+      
+     // BusinessPolicyFactoryConfigurator businessPolicyFactoryConfigurator = BusinessPolicyFactoryConfigurator.getInstance();
+      
+      //businessPolicyFactory = businessPolicyFactoryConfigurator.getBusinessPolicyFactory("PAYMENTS_POLICY_FACTORY");
+      //abstractBusinessPolicy = businessPolicyFactory.getBusinesPolicyInstance("READ_SELF_TRANSFER_BUSINESS_POLICY", businessPolicyData);
+      
+      //abstractBusinessPolicy.validate();
+      //PaymentKey key = new PaymentKey();
+      //key.setId(ZakatDonationReadRequestDTO.getPaymentId());
+      com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation ZakatDonationDomain = new com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation();
+      ZakatDonationDomain = ZakatDonationDomain.listCompanyDetails();
+      
+      //ReadZakatDonationSystemConstraint constraint = new ReadZakatDonationSystemConstraint(ZakatDonationDomain.getDebitAccountId());
+      //constraint.isSatisfiedBy();
+      ZakatDonationDTO = new ZakatDonationAssembler().fromSelfDomainObjectCompanyList(ZakatDonationDomain);
+      //ZakatDonationReadResponse.setPaymentId(ZakatDonationDomain.getKey().getId());
+      ZakatDonationReadResponse.setTransferDetails(ZakatDonationDTO);
+      ZakatDonationReadResponse.setStatus(buildStatus(status));
+      ZakatDonationReadResponse.setPaymentType(PaymentType.SELFFT);
+      //this.extensionExecutor.postRead(sessionContext, ZakatDonationReadRequestDTO, ZakatDonationReadResponse);
+    }
+    catch (com.ofss.digx.infra.exceptions.Exception e1)
+    {
+      this.logger.log(Level.SEVERE, this.FORMATTER.formatMessage("Exception encountered while invoking the service %s while reading transaction details of Self transfer", new Object[] {ZakatDonation.class
+      
+        .getName() }), e1);
+      fillTransactionStatus(status, e1);
+    }
+    catch (RuntimeException rte)
+    {
+      fillTransactionStatus(status, rte);
+      this.logger.log(Level.SEVERE, this.FORMATTER.formatMessage("RuntimeException from read for ZakatDonationReadRequestDTO '%s'", new Object[] { ZakatDonationReadRequestDTO }), rte);
+    }
+    finally
+    {
+      Interaction.close();
+    }
+    super.encodeOutput(ZakatDonationReadResponse);
+    super.checkResponsePolicy(sessionContext, ZakatDonationReadResponse);
+    if (this.logger.isLoggable(Level.FINE)) {
+      this.logger.log(Level.FINE, this.FORMATTER.formatMessage("Exiting read of ZakatDonation, SessionContext: %s, ZakatDonationReadResponse: %s in class '%s' ", new Object[] { sessionContext, ZakatDonationReadResponse, THIS_COMPONENT_NAME }));
+    }
+    return ZakatDonationReadResponse;
+  }
+  
+  
+  
   @Role(roles={com.ofss.digx.enumeration.RoleType.CUSTOMER, com.ofss.digx.enumeration.RoleType.MAKER})
   public ZakatDonationCreateResponse create(SessionContext sessionContext, ZakatDonationCreateRequestDTO ZakatDonationCreateRequestDTO)
     throws com.ofss.digx.infra.exceptions.Exception
@@ -166,62 +237,17 @@ public class ZakatDonation
     TransactionStatus status = fetchTransactionStatus();
     ZakatDonationCreateResponse ZakatDonationCreateResponse = new ZakatDonationCreateResponse();
     TransactionReference transactionReference = new TransactionReference();
-    AbstractBusinessPolicy abstractBusinessPolicy = null;
-    ZakatDonationBusinessPolicyData ZakatDonationPaymentBusinessPolicyData = null;
-    AbstractBusinessPolicyFactory businessPolicyFactory = null;
+
     try
     {
-     // SystemConstraint<DataTransferObject> constraint = new CreateZakatDonationSystemConstraint(ZakatDonationCreateRequestDTO.getTransferDetails().getAmount().getCurrency(), ZakatDonationCreateRequestDTO.getTransferDetails().getCreditAccountId());
-      //constraint.isSatisfiedBy();
+
       ZakatDonationCreateRequestDTO.validate(sessionContext);
       
-      IAdapterFactory coreServiceAdapterFactory = AdapterFactoryConfigurator.getInstance().getAdapterFactory("CORE_SERVICE_ADAPTER_FACTORY");
+
+     // PaymentValueDateDTO paymentValueDateDTO = new PaymentValueDateDTO();
       
-      ICoreServiceAdapter coreServiceAdapter = (ICoreServiceAdapter)coreServiceAdapterFactory.getAdapter("CORE_SERVICE_ADAPTER");
-      //this.extensionExecutor.preCreate(sessionContext, ZakatDonationCreateRequestDTO);
-      String accountBranch = fetchAccountBranch(ZakatDonationCreateRequestDTO
-        .getTransferDetails().getDebitAccountId().getValue());
-      BranchDatesDefinitionDTO branchDatesDefinitionDTO = new BranchDatesDefinitionDTO();
-      branchDatesDefinitionDTO.setBranchCode(accountBranch);
-      BranchDatesDefinitionDTO branchDates = coreServiceAdapter.fetchBranchDates(branchDatesDefinitionDTO);
-      PaymentValueDateDTO paymentValueDateDTO = new PaymentValueDateDTO();
-      paymentValueDateDTO.setPaymentModeType(PaymentModeType.IMMEDIATE);
-      paymentValueDateDTO.setPaymentDate(ZakatDonationCreateRequestDTO.getTransferDetails().getValueDate());
-      paymentValueDateDTO.setValueDate(branchDates.getCurrentDate());
-      ZakatDonationCreateRequestDTO.getTransferDetails().setValueDate(paymentValueDateDTO.getValueDate());
-      ZakatDonationPaymentBusinessPolicyData = new ZakatDonationBusinessPolicyData();
-    //  ZakatDonationPaymentBusinessPolicyData
-      //  .setCreditAccount(ZakatDonationCreateRequestDTO.getTransferDetails().getCreditAccountId());
-      ZakatDonationPaymentBusinessPolicyData
-        .setDebitAccount(ZakatDonationCreateRequestDTO.getTransferDetails().getDebitAccountId());
-      ZakatDonationPaymentBusinessPolicyData
-        .setCreditAmount(ZakatDonationCreateRequestDTO.getTransferDetails().getAmount());
-      ZakatDonationPaymentBusinessPolicyData
-        .setPurpose(ZakatDonationCreateRequestDTO.getTransferDetails().getPurpose());
-      ZakatDonationPaymentBusinessPolicyData
-        .setPurposeText(ZakatDonationCreateRequestDTO.getTransferDetails().getPurposeText());
-      ZakatDonationPaymentBusinessPolicyData
-        .setRemarks(ZakatDonationCreateRequestDTO.getTransferDetails().getRemarks());
-      ZakatDonationPaymentBusinessPolicyData
-        .setUserRefNo(ZakatDonationCreateRequestDTO.getTransferDetails().getUserReferenceNo());
-      
-      BusinessPolicyFactoryConfigurator businessPolicyFactoryConfigurator = BusinessPolicyFactoryConfigurator.getInstance();
-      
-      businessPolicyFactory = businessPolicyFactoryConfigurator.getBusinessPolicyFactory("PAYMENTS_POLICY_FACTORY");
-      abstractBusinessPolicy = businessPolicyFactory.getBusinesPolicyInstance("PAYMENT_SELF_TRANSFER_BUSINESS_POLICY", ZakatDonationPaymentBusinessPolicyData);
-      
-      abstractBusinessPolicy.validate("DIGX_PY_0131");
-      Date newValueDate = null;
-      if ((ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse() != null) && 
-        (((WorkingWindowCheckResponse) ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse()).getProcessingType() != null)) {
-        if (((WorkingWindowCheckResponse) ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse()).getProcessingType().equals(WorkingWindowProcessingType.SUCCESS)) {
-          if (((WorkingWindowCheckResponse) ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse()).getWorkingWindowStatus().equals(WorkingWindowStatus.CLOSED_NOT_AVAILABLE))
-          {
-            newValueDate = branchDates.getNextWorkingDate();
-            ZakatDonationCreateRequestDTO.getTransferDetails().setValueDate(newValueDate);
-          }
-        }
-      }
+      ZakatDonationCreateRequestDTO.getTransferDetails().setValueDate(new Date());
+ 
       ZakatDonationDTO ZakatDonationDTO = new ZakatDonationDTO();
       ZakatDonationDTO = ZakatDonationCreateRequestDTO.getTransferDetails();
       ZakatDonationDTO.setPartyId(new Party(sessionContext.getTransactingPartyCode()));
@@ -236,26 +262,14 @@ public class ZakatDonation
       transactionReference.setUserReferenceNo(ZakatDonationDTO.getUserReferenceNo());
       ZakatDonationDomain.setTransactionReference(transactionReference);
       ZakatDonationDomain.setStatus(PaymentStatusType.INITIATED);
+      
       ZakatDonationDomain.create(ZakatDonationDomain);
+      
+      
       ZakatDonationCreateResponse.setPaymentId(ZakatDonationDomain.getKey().getId());
       ZakatDonationCreateResponse.setStatus(buildStatus(status));
-//      if ((ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse() != null) && 
-//        (ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse().getProcessingType() != null)) {
-//        if (ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse().getProcessingType().equals(WorkingWindowProcessingType.SUCCESS)) {
-//          if (ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse().getWorkingWindowStatus() != null) {
-//            if (ZakatDonationPaymentBusinessPolicyData.getWorkingWindowCheckResponse().getWorkingWindowStatus().equals(WorkingWindowStatus.CLOSED_NOT_AVAILABLE))
-//            {
-//              if (newValueDate == null) {
-//                newValueDate = branchDates.getNextWorkingDate();
-//              }
-//              setWarning(ZakatDonationCreateResponse.getStatus(), "DIGX_WW_017", new String[] {newValueDate
-//              
-//                .toString("dd MMM yyyy") });
-//            }
-//          }
-//        }
-//      }
-      setWarning(paymentValueDateDTO, ZakatDonationCreateResponse.getStatus());
+
+      //setWarning(paymentValueDateDTO, ZakatDonationCreateResponse.getStatus());
       //this.extensionExecutor.postCreate(sessionContext, ZakatDonationCreateRequestDTO, ZakatDonationCreateResponse);
     }
     catch (com.ofss.digx.infra.exceptions.Exception e)
@@ -659,8 +673,11 @@ public Response list(Date paramDate1, Date paramDate2, PaymentStatusType paramPa
 }
 
 @Override
-public Response readCompanyDetails() {
+public Response listCompanyDetails()
+{
 	// TODO Auto-generated method stub
 	return null;
 }
+
+
 }
