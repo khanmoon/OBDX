@@ -21,6 +21,7 @@ import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MerchantTransferReques
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MerchantTransferResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.PayAnyoneTransferRequest;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.PayAnyoneTransferResponse;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.ZakatDonationTransferResponse;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.DonationTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferResponseDomainDTO;
@@ -31,6 +32,8 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponse
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponseDomainDTO;*/
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationResponseDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalRequest;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.CardlessWithdrawalResponse;
 import com.ofss.digx.sites.abl.extxface.payments.impl.dto.DonationTransferRequest;
@@ -284,4 +287,55 @@ public MasterpassTransferResponseDomainDTO processMasterpassTransfer(MasterpassT
   }
   return donationTransferResponse;
 }
+
+/*@Override
+public ZakatDonationResponseDomainDTO processZakatDonationTransfer(
+		ZakatDonationTransferRequestDomainDTO zakatDonationTransferReqDTO) {
+	
+	System.out.println(zakatDonationTransferReqDTO.toString());
+    if (logger.isLoggable(Level.FINE)) {
+    logger.log(Level.FINE, formatter
+      .formatMessage("Entered in method processDonationTransfer of %s used for masterpass transfer, %s", new Object[] { THIS_COMPONENT_NAME, zakatDonationTransferReqDTO }));
+  }
+  super.checkRequest("com.ofss.digx.extxface.payments.impl.PaymentAdapter.processMasterpassTransfer", new Object[] { zakatDonationTransferReqDTO });
+  
+  AdapterInteraction.begin();
+  ZakatDonationResponseDomainDTO donationTransferResponse = null;
+  ZakatDonationTransferResponse extSystemResponse = null;
+  
+  MasterpassTransferAssembler masterpassTransferAssembler = null;
+  try
+  {
+    masterpassTransferAssembler = new MasterpassTransferAssembler();
+    MasterpassTransferRequest extSystemRequest = masterpassTransferAssembler.toRequest(new Object[] { zakatDonationTransferReqDTO });
+    
+    IEndpoint endpoint = EndpointFactory.getInstance().getEndpoint(extSystemRequest.getInterfaceId());
+    extSystemResponse = (ZakatDonationTransferResponse)endpoint.processRequest(extSystemRequest, MasterpassTransferResponse.class);
+  }
+  catch (Exception e)
+  {
+    logger.log(Level.SEVERE, formatter.formatMessage(" Exception has occured while getting response object of %s inside the processDonationTransfer method of %s for %s. Exception details are %s", new Object[] {MasterpassTransferRequestDomainDTO.class
+    
+      .getName(), THIS_COMPONENT_NAME, zakatDonationTransferReqDTO, e }));
+  }
+  finally
+  {
+    AdapterInteraction.close();
+  }
+  try {
+	this.responseHandler.checkExternalSystemResponse(extSystemResponse, "TP_PY_0001");
+	donationTransferResponse = masterpassTransferAssembler.fromResponse(new Object[] { extSystemResponse });
+} catch (com.ofss.digx.infra.exceptions.Exception e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+  setExternalReferenceNumber(donationTransferResponse.getHostReference());
+  super.checkResponse(donationTransferResponse);
+  if (logger.isLoggable(Level.FINE)) {
+    logger.log(Level.FINE, formatter
+      .formatMessage("Exiting from method processDonationTransfer of %s used to process donation transfer, donationTransferReqDTO  = %s", new Object[] { THIS_COMPONENT_NAME, zakatDonationTransferReqDTO }));
+  }
+  return donationTransferResponse;
+
+}*/
 }

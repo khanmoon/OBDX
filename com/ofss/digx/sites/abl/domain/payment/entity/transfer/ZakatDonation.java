@@ -17,9 +17,7 @@ public class ZakatDonation
   implements IPersistenceObject
 {
   private static final long serialVersionUID = -4960596856991625778L;
-  private String creditAccountId;
   private String companyID;
-  
   private ArrayList<ZakatDonationCompanyDetails> companiesList;
   
   public String getCompanyId()
@@ -32,15 +30,6 @@ public class ZakatDonation
 	  this.companyID = companyID;
   }
   
-  public String getCreditAccountId()
-  {
-    return this.creditAccountId;
-  }
-  
-  public void setCreditAccountId(String creditAccountId)
-  {
-    this.creditAccountId = creditAccountId;
-  }
   
   public void setCompaniesList(ArrayList<ZakatDonationCompanyDetails> companiesList)
   {
@@ -51,8 +40,6 @@ public class ZakatDonation
   {
 	  return this.companiesList;
   }
-
-  
  
   public ZakatDonation read(PaymentKey key)
     throws Exception

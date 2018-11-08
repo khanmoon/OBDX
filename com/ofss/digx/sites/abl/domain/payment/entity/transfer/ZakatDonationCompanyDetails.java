@@ -10,6 +10,18 @@ extends AbstractDomainObjectKey
 	private String companyName;
 	private String companyCode;
 	private String categgoryID;
+	private String creditAccountId;
+	  
+	
+	  public String getCreditAccountId()
+	  {
+	    return this.creditAccountId;
+	  }
+	  
+	  public void setCreditAccountId(String creditAccountId)
+	  {
+	    this.creditAccountId = creditAccountId;
+	  }
 	
 	public String getCompanyID ()
 	{

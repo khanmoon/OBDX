@@ -8,6 +8,7 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferReques
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationTransferRequestDomainDTO;
 //import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestDomainDTO;
 //import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.domain.payment.entity.payee.DonationPayeeDetails;
@@ -18,6 +19,7 @@ import com.ofss.digx.sites.abl.domain.payment.entity.transfer.DonationTransfer;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MasterpassTransfer;
 //import com.ofss.digx.sites.abl.domain.payment.entity.transfer.MerchantTransfer;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.PayAnyoneTransfer;
+import com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation;
 import com.ofss.fc.framework.domain.IAbstractDomainObject;
 import com.ofss.fc.framework.domain.assembler.AbstractAssembler;
 import com.ofss.fc.framework.domain.common.dto.DomainObjectDTO;
@@ -251,4 +253,12 @@ public MasterpassTransferRequestDomainDTO fromDomainObjectMasterpassTransfer(Mas
 	    }
 	    return masterpassTransferRequestDomainDTO;
 }
+
+
+public ZakatDonationTransferRequestDomainDTO fromDomainObjectZakatDonationTransfer(ZakatDonation paramZakatDonation) {
+	
+	return null;
+}
+
+
 }

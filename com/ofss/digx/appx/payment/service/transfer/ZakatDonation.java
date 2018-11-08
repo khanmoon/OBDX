@@ -193,17 +193,6 @@ public class ZakatDonation
       ZakatDonationResponse = ZakatDonationService.updateStatus(channelContext.getSessionContext(), ZakatDonationUpdateRequestDTO);
       
       response = buildResponse(ZakatDonationResponse, Response.Status.OK);
-      try
-      {
-        channelInteraction.close(channelContext);
-      }
-      catch (Exception e)
-      {
-        logger.log(Level.SEVERE, formatter
-          .formatMessage("Error encountered while closing channelContext %s", new Object[] { channelContext }), e);
-        
-        response = buildResponse(e, Response.Status.INTERNAL_SERVER_ERROR);
-      }
 
     }
     catch (Exception e)

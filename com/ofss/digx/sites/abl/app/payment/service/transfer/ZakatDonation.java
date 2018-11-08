@@ -30,6 +30,7 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationReadRespons
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationResponse;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationUpdateRequestDTO;
 import com.ofss.digx.app.payment.service.core.PaymentAlertHelper;
+import com.ofss.digx.app.payment.service.core.PaymentTokenGenerationHelper;
 import com.ofss.digx.app.payment.service.transfer.InternalTransfer;
 //import com.ofss.digx.sites.abl.app.payment.service.transfer.ext.IZakatDonationExtExecutor;
 import com.ofss.digx.common.annotations.Role;
@@ -52,6 +53,8 @@ import com.ofss.digx.enumeration.config.WorkingWindowStatus;
 import com.ofss.digx.enumeration.payment.PaymentModeType;
 import com.ofss.digx.enumeration.payment.PaymentStatusType;
 import com.ofss.digx.enumeration.payment.PaymentType;
+import com.ofss.digx.framework.determinant.DeterminantResolver;
+import com.ofss.digx.framework.security.authentication.entity.TokenGenerationDetails;
 import com.ofss.fc.app.context.SessionContext;
 import com.ofss.fc.datatype.Date;
 import com.ofss.fc.framework.domain.common.dto.DataTransferObject;
@@ -311,78 +314,66 @@ public class ZakatDonation
     if (this.logger.isLoggable(Level.FINE)) {
       this.logger.log(Level.FINE, this.FORMATTER.formatMessage("Entered into update method of Self Transfer service  Input: ZakatDonationUpdateRequestDTO: %s in class '%s'", new Object[] { ZakatDonationUpdateRequestDTO, THIS_COMPONENT_NAME }));
     }
-    super.checkAccessPolicy("com.ofss.digx.sites.abl.app.payment.service.transfer.updateStatus", new Object[] { sessionContext, ZakatDonationUpdateRequestDTO });
+    //super.checkAccessPolicy("com.ofss.digx.sites.abl.app.payment.service.transfer.updateStatus", new Object[] { sessionContext, ZakatDonationUpdateRequestDTO });
     
     super.canonicalizeInput(ZakatDonationUpdateRequestDTO);
     Interaction.begin(sessionContext);
     TransactionStatus transactionStatus = fetchTransactionStatus();
     ZakatDonationResponse ZakatDonationResponse = new ZakatDonationResponse();
     ZakatDonationResponse.setStatus(fetchStatus());
-    AbstractBusinessPolicy abstractBusinessPolicy = null;
-    AbstractBusinessPolicyFactory businessPolicyFactory = null;
-    WorkingWindowCheckBusinessPolicyData workingWindowCheckBusinessPolicyData = new WorkingWindowCheckBusinessPolicyData();
     try
     {
       ZakatDonationUpdateRequestDTO.validate(sessionContext);
-      //this.extensionExecutor.preUpdateStatus(sessionContext, ZakatDonationUpdateRequestDTO);
+
       
-      IAdapterFactory coreServiceAdapterFactory = AdapterFactoryConfigurator.getInstance().getAdapterFactory("CORE_SERVICE_ADAPTER_FACTORY");
+      PaymentTokenGenerationHelper tokenGenerationHelper = PaymentTokenGenerationHelper.getInstance();
+      TokenGenerationDetails tokenGenerationDetails = tokenGenerationHelper.tokenGenerationHelper(THIS_COMPONENT_NAME, sessionContext
+        .getTransactingPartyCode(), ZakatDonationUpdateRequestDTO
+        .getPaymentId(), "Zakat Donation Transfer Payment", true, null);
       
-      ICoreServiceAdapter coreServiceAdapter = (ICoreServiceAdapter)coreServiceAdapterFactory.getAdapter("CORE_SERVICE_ADAPTER");
       
-      BusinessPolicyFactoryConfigurator businessPolicyFactoryConfigurator = BusinessPolicyFactoryConfigurator.getInstance();
       
-      businessPolicyFactory = businessPolicyFactoryConfigurator.getBusinessPolicyFactory("PAYMENTS_POLICY_FACTORY");
-      abstractBusinessPolicy = businessPolicyFactory.getBusinesPolicyInstance("GENERIC_PAYMENT_UPD_STATUS_WORKING_WINDOW_BUSINESS_POLICY", workingWindowCheckBusinessPolicyData);
-      
-      abstractBusinessPolicy.validate("DIGX_PY_0131");
       com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation ZakatDonationDomain = new com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation();
       PaymentKey key = new PaymentKey();
       key.setId(ZakatDonationUpdateRequestDTO.getPaymentId());
+      key.setDeterminantValue(DeterminantResolver.getInstance().fetchDeterminantValue(com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation.class.getName()));
       ZakatDonationDomain = ZakatDonationDomain.read(key);
-      ZakatDonationDomain.setStatus(PaymentStatusType.VERIFIED);
-      Date newValueDate = null;
-//      if (sessionContext.getMaxValueDate() != null) {
-//        ZakatDonationDomain.setValueDate(new Date(sessionContext.getPostingDateText()));
-//      }
-      String accountBranch = fetchAccountBranch(ZakatDonationDomain.getDebitAccountId());
-      BranchDatesDefinitionDTO valueDateRequestDTO = new BranchDatesDefinitionDTO();
-      valueDateRequestDTO.setBranchCode(accountBranch);
-      BranchDatesDefinitionDTO branchDates = coreServiceAdapter.fetchBranchDates(valueDateRequestDTO);
-      if ((workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse() != null) && 
-        (workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse().getProcessingType() != null)) {
-        if (workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse().getProcessingType().equals(WorkingWindowProcessingType.SUCCESS)) {
-          if (workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse().getWorkingWindowStatus().equals(WorkingWindowStatus.CLOSED_NOT_AVAILABLE))
-          {
-            newValueDate = branchDates.getNextWorkingDate();
-            ZakatDonationDomain.setValueDate(newValueDate);
-          }
-        }
+      ZakatDonationDomain.setValueDate(new Date());
+      
+      //ZakatDonationDomain.setStatus(PaymentStatusType.VERIFIED);
+     
+      if ((tokenGenerationDetails != null) && (tokenGenerationDetails.isTokenAllowed()))
+      {
+    	  ZakatDonationResponse.setTokenAvailable(tokenGenerationDetails.isTokenAllowed());
+    	  ZakatDonationDomain.setStatus(PaymentStatusType.PENDINGVERIFICATION);
+    	  ZakatDonationDomain.setTokenId(tokenGenerationDetails.getUid());
       }
-      PaymentAlertHelper alertHelper = PaymentAlertHelper.getInstance();
-      //alertHelper.generateSelfPaymentInitiationAlert(ZakatDonationDomain);
+      else
+      {
+    	  ZakatDonationResponse.setTokenAvailable(false);
+    	  ZakatDonationDomain.setStatus(PaymentStatusType.VERIFIED);
+//        PaymentAlertHelper alertHelper = PaymentAlertHelper.getInstance();
+//        alertHelper.generateCardlessWithdrawalPaymentInitiationAlert(cardlessWithdrawalDomain);
+      }
       ZakatDonationDomain.update(ZakatDonationDomain);
-      ZakatDonationDomain = ZakatDonationDomain.process(ZakatDonationDomain);
-      ZakatDonationResponse
-        .setExternalReferenceId(ZakatDonationDomain.getTransactionReference().getExternalReferenceId());
+     
+      
+//      if (!tokenGenerationDetails.isTokenAllowed())
+//      {
+//    	  ZakatDonationDomain = ZakatDonationDomain.process(ZakatDonationDomain);
+//    	  ZakatDonationDomain.setExternalReferenceId(cardlessWithdrawalDomain.getTransactionReference().getExternalReferenceId());
+//      }
+      
       ZakatDonationResponse.setStatus(buildStatus(transactionStatus));
-      if ((workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse() != null) && 
-        (workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse().getProcessingType() != null)) {
-        if (workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse().getProcessingType().equals(WorkingWindowProcessingType.SUCCESS)) {
-          if (workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse().getWorkingWindowStatus() != null) {
-            if (workingWindowCheckBusinessPolicyData.getWorkingWindowCheckResponse().getWorkingWindowStatus().equals(WorkingWindowStatus.CLOSED_NOT_AVAILABLE))
-            {
-              if (newValueDate == null) {
-                newValueDate = branchDates.getNextWorkingDate();
-              }
-              setWarning(ZakatDonationResponse.getStatus(), "DIGX_WW_017", new String[] {newValueDate
-              
-                .toString("dd MMM yyyy") });
-            }
-          }
-        }
-      }
-      //this.extensionExecutor.postUpdateStatus(sessionContext, ZakatDonationUpdateRequestDTO, ZakatDonationResponse);
+      
+      super.encodeOutput(ZakatDonationDomain);
+  
+      
+      //ZakatDonationDomain.update(ZakatDonationDomain);
+      //ZakatDonationDomain = ZakatDonationDomain.process(ZakatDonationDomain);
+     //ZakatDonationResponse.setExternalReferenceId(ZakatDonationDomain.getTransactionReference().getExternalReferenceId());
+  
+    
     }
     catch (com.ofss.digx.infra.exceptions.Exception e1)
     {

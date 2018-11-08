@@ -1,13 +1,22 @@
 package com.ofss.digx.sites.abl.app.payment.assembler.service.transfer;
 
 import com.ofss.digx.app.payment.dto.PaymentDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.MasterpassTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationDetails;
+import com.ofss.digx.sites.abl.datatype.CardAcceptor;
+import com.ofss.digx.sites.abl.datatype.MasterpassCard;
+import com.ofss.digx.sites.abl.datatype.MasterpassIdentification;
+import com.ofss.digx.datatype.Address;
+import com.ofss.digx.datatype.CurrencyAmount;
+import com.ofss.digx.datatype.Name;
 import com.ofss.digx.datatype.complex.Account;
 import com.ofss.digx.datatype.complex.Party;
 import com.ofss.digx.domain.payment.entity.TransactionReference;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonation;
 import com.ofss.digx.sites.abl.domain.payment.entity.transfer.ZakatDonationCompanyDetails;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.MasterpassTransferRequest;
+import com.ofss.digx.sites.abl.extxface.payments.impl.dto.ZakatDonationTransferRequest;
 import com.ofss.digx.enumeration.payment.PaymentType;
 import com.ofss.digx.infra.exceptions.Exception;
 import com.ofss.fc.framework.domain.IAbstractDomainObject;
@@ -69,7 +78,9 @@ public class ZakatDonationAssembler
     if (ZakatDonationDomain != null)
     {
       ZakatDonationDTO = new ZakatDonationDTO();
+      
       ZakatDonationDTO.setCompanyID(ZakatDonationDomain.getCompanyId());
+      
       ZakatDonationDTO.setPartyId(new Party(ZakatDonationDomain.getPartyId()));
       ZakatDonationDTO.setAmount(ZakatDonationDomain.getAmount());
       ZakatDonationDTO.setDebitAccountId(new Account(ZakatDonationDomain.getDebitAccountId()));
@@ -80,6 +91,16 @@ public class ZakatDonationAssembler
       }
       ZakatDonationDTO.setValueDate(ZakatDonationDomain.getValueDate());
       ZakatDonationDTO.setDictionaryArray(getDictionaryArray(ZakatDonationDomain));
+  
+      ArrayList<ZakatDonationCompanyDetails> companiesList = new ArrayList<ZakatDonationCompanyDetails>();
+      
+      if(ZakatDonationDomain.getCompaniesList().size() > 0)
+      {
+          companiesList = (ArrayList<ZakatDonationCompanyDetails>) ZakatDonationDomain.getCompaniesList();
+      }
+      
+      ZakatDonationDTO.setCompaniesList(companiesList); 
+      
     }
     return ZakatDonationDTO;
   }
@@ -163,4 +184,55 @@ public class ZakatDonationAssembler
     }
     return ZakatDonationDetailsListDTO;
   }
+  
+  /*public ZakatDonationTransferRequest toRequest(Object... arg0)
+		    throws com.ofss.digx.infra.exceptions.Exception
+		  {
+	  	    ZakatDonationTransferRequest donationTransferRequest = null;
+		   
+		    MasterpassTransferRequestDomainDTO request = (MasterpassTransferRequestDomainDTO)arg0[0];
+		    Address masterpassAddress = new Address();
+		    CurrencyAmount amount = new CurrencyAmount();
+		    Name masterpassName = new Name();
+		    if (request != null)
+		    {
+		      donationTransferRequest = new ZakatDonationTransferRequest("MasterpassPayment");
+		      if (request.getDictionaryArray() != null) {
+		        donationTransferRequest.setDictionaryArray(toDictionary(request.getDictionaryArray()));
+		      }
+//		      donationTransferRequest.setSrcAccount(request.getSrcAccount());
+//		      donationTransferRequest.setBillerId(request.getBillerId());
+//		      donationTransferRequest.setAmount(request.getPmtAmount());
+		      donationTransferRequest.setReferenceNo(request.getSystemReferenceNumber());
+		      donationTransferRequest.setTransactionReference(request.getSystemReferenceNumber());
+		      cardAcceptor.setCountry(request.getRecipient_address_country());
+		      cardAcceptor.setName(request.getCard_acceptor_name());
+		      cardAcceptor.setPostalCode(request.getRecipient_address_postalcode());
+		      cardAcceptor.setState(request.getRecipient_address_state());
+		      cardAcceptor.setCity(request.getRecipient_address_city());
+		      FundingmasterpassCard.setAccountNumber(request.getDebitAccountId());
+		      donationTransferRequest.setFundingCard(FundingmasterpassCard);
+		      RecevingmasterpassCard.setAccountNumber(request.getCreditAccountId());
+		      donationTransferRequest.setReceivingCard(RecevingmasterpassCard);
+		      donationTransferRequest.setLanguageIdentification("ENG");
+		      masterpassAddress.setLine1(request.getSender_address_line1());
+		      masterpassAddress.setCity(request.getSender_address_city());
+		      masterpassAddress.setState(request.getSender_address_state());
+		      masterpassAddress.setCountry(request.getSender_address_country());
+		      masterpassAddress.setZipCode(request.getSender_address_postalcode());
+		      donationTransferRequest.setSenderAddress(masterpassAddress);
+		      masterpassName.setFirstName(request.getSender_first_name());
+		      masterpassName.setMiddleName(request.getSender_middle_name());
+		      masterpassName.setLastName(request.getSender_last_name());
+		      donationTransferRequest.setSenderName(masterpassName);
+		      amount.setAmount(request.getPmtAmount().getAmount());
+		      amount.setCurrency(request.getPmtAmount().getCurrency());
+		      donationTransferRequest.setReceivingAmount(amount);
+		      donationTransferRequest.setCardAcceptor(cardAcceptor);
+		      
+		    }
+		    return donationTransferRequest;
+		  }
+  */
+  
 }

@@ -10,6 +10,8 @@ import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferRequestD
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.MerchantTransferResponseDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferRequestDomainDTO;
 import com.ofss.digx.sites.abl.app.payment.dto.transfer.PayAnyoneTransferResponseDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationResponseDomainDTO;
+import com.ofss.digx.sites.abl.app.payment.dto.transfer.ZakatDonationTransferRequestDomainDTO;
 
 
 public abstract interface IPaymentAdapter
@@ -29,4 +31,6 @@ public abstract interface IPaymentAdapter
 public abstract MasterpassTransferResponseDomainDTO processMasterpassTransfer(
 		MasterpassTransferRequestDomainDTO donationTransferReqDTO);
 
+/*public abstract ZakatDonationResponseDomainDTO processZakatDonationTransfer(
+		ZakatDonationTransferRequestDomainDTO zakatDonationTransferReqDTO);*/
 }

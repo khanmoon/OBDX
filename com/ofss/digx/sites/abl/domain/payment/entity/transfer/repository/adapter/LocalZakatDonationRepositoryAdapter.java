@@ -38,23 +38,32 @@ public class LocalZakatDonationRepositoryAdapter
     throws Exception
   {
 	  key.setDeterminantValue(DeterminantResolver.getInstance().fetchDeterminantValue(ZakatDonation.class.getName()));  
-      return (ZakatDonation)super.load(ZakatDonation.class, key);
+	  ZakatDonation _zakatDonationData = (ZakatDonation)super.load(ZakatDonation.class, key);
+	  ArrayList<ZakatDonationCompanyDetails> companyDetails = readCompanyDetails(_zakatDonationData.getCompanyId());
+	  _zakatDonationData.setCompaniesList(companyDetails);
+	  return _zakatDonationData;
   }
+  
+            public ArrayList<ZakatDonationCompanyDetails> readCompanyDetails(String companyID)
+		    throws Exception
+		  {
+			  
+	  			HashMap<String, Object> parameters = new HashMap();
+			    parameters.put("companyID", companyID);
+			    ArrayList<ZakatDonationCompanyDetails> _companiesList = (ArrayList<ZakatDonationCompanyDetails>)executeNamedQuery("fetchZakatDonationCompanyData", parameters);	    
+			    return _companiesList;
+
+		  }
   
   public ZakatDonation listCompanyDetails()
 		    throws Exception
 		  {
 			  
-			  HashMap<String, Object> parameters = new HashMap();
-			  
+	  			HashMap<String, Object> parameters = new HashMap();
 			    parameters.put("categgoryID", "zakatDonationCompany");
-			    
 			    ArrayList<ZakatDonationCompanyDetails> _companiesList = (ArrayList<ZakatDonationCompanyDetails>)executeNamedQuery("fetchCompaniesListZakatDonation", parameters);
-			    ZakatDonation _zakatDonation = new ZakatDonation();
-			    
+			    ZakatDonation _zakatDonation = new ZakatDonation();			    
 			    _zakatDonation.setCompaniesList(_companiesList);
-
-			   
 			    return _zakatDonation;
 			  
 			//  key.setDeterminantValue(DeterminantResolver.getInstance().fetchDeterminantValue(ZakatDonation.class.getName()));  
