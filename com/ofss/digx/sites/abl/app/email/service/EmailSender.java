@@ -14,6 +14,7 @@ import com.ofss.digx.sites.abl.app.email.dto.EmailSenderRequestDTO;
 import com.ofss.digx.sites.abl.app.email.dto.EmailSenderResponseDTO;
 import com.ofss.fc.app.context.SessionContext;
 import com.ofss.fc.framework.domain.common.dto.DataTransferObject;
+import com.ofss.fc.service.response.TransactionStatus;
 import com.ofss.digx.infra.exceptions.Exception;
 
 public class EmailSender 
@@ -21,6 +22,7 @@ extends AbstractApplication
 implements IEmailSender{
 	public EmailSenderResponseDTO sendPdf(SessionContext sessionContext,EmailSenderRequestDTO emailSenderRequestDTO) throws Exception
 		  {
+		TransactionStatus status = fetchTransactionStatus();
 		EmailSenderResponseDTO emailSenderResponse = null;
 		DemandDepositAccountActivityResponseDTO accountActivityResponse = null;
 		DemandDepositAccountActivityRequestDTO accountActivityRequestDTO = emailSenderRequestDTO.getAccountActivityDetails();
@@ -34,7 +36,9 @@ implements IEmailSender{
         emailHelper.from("dummy@sad.com");
         emailHelper.setBaos(baos);
         emailHelper.send();
-        
+        emailSenderResponse.setStatus(buildStatus(status));
+        super.encodeOutput(emailSenderResponse);
+        super.indirectResponse(emailSenderResponse);
 		return emailSenderResponse;
 		  }
 }
